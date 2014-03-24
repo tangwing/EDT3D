@@ -31,9 +31,9 @@
 			var fileInput=document.getElementById('fileInput');
 			var fileContent = document.getElementById('parseResult');
 			fileInput.addEventListener('change', function(e){
-
+				var file = fileInput.files[0];
 				//Not testing file type
-				if(true )
+				if(true)
 				{
 					var reader = new FileReader();
 					reader.onload=function(){
@@ -43,7 +43,7 @@
 						
 						var regTmp = new RegExp("(,?\"[A-Z-]*):","g");
 						reader.result.match(regEvent).forEach(function(e){
-							var json = "{"+ 
+							var json = "{"+
 								e.replace(/BEGIN:VEVENT\r?\n/g,"\"") //remove the beginning
 								 .replace(/\r?\nEND:VEVENT/g,"\"")	 //remove the end
 								 .replace(/\r?\n([^A-Z])/g, "$1")	 //remove illegal new line
