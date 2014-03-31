@@ -28,9 +28,11 @@
 
 		window.onload = function()
 		{
+			testAnything()
 			var fileInput=document.getElementById('fileInput');
 			var fileContent = document.getElementById('parseResult');
 			fileInput.addEventListener('change', function(e){
+				eventList = []
 				var file = fileInput.files[0];
 				//Not testing file type
 				if(true)
@@ -50,15 +52,28 @@
 								 .replace(/\r?\n/g,"\",\"")			 //new line to ,
 								 .replace(regTmp, "$1\":\"")		 //: to ":"
 								 +"}";
-							// log(json);
-							eventList.push(JSON.parse(json));
-						})
-						// log(eventList.length)
+							log(json);
+							var cours = JSON.parse(json);
+							cours.TBEGIN = new Date().fromStampICS(cours.DTSTART)
+							cours.TEND = new Date().fromStampICS(cours.DTEND)
+							eventList.push(cours);
+						});
+						
 						//Now we get all event of today in the list
-						// log(eventList[0].DESCRIPTION)
+						log(eventList.length)
+						//Now we have eventList, attaching it to rooms
+						eventList.forEach(function(v, ind){
+							log("Cours "+ind +":")
+							log(v.TBEGIN.getHours()-1 +":"+v.TBEGIN.getMinutes()+ " -> " + (v.TEND.getHours()-1)+":"+v.TEND.getMinutes())
+							log(v.TBEGIN)
+							log(v.SUMMARY)
+							log(v.LOCATION)
+						})
 					};
 					reader.readAsText(file);
 				}else fileContent.innerText = "File type not supported!"
+
+				
 			});
 		}
 	</script>

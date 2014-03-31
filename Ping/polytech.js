@@ -87,11 +87,12 @@ function init() {
 	scene.add(ambient);*/
 	//
 	window.addEventListener( 'resize', onWindowResize, false );
+	///test picking
+	///document.addEventListener('mousedown', onDocumentMouseDown,false);
 
 	salles.forEach(function(value, index, ar){
 		drawSalle(value,salles_stats[index]);
 	});
-	
 }
 
 function drawSalle(salle,stats)
@@ -212,6 +213,32 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
+///Lei
+function onDocumentMouseDown()
+{
+	console.log("onDocumentMouseDown")
+	event.preventDefault();
+	var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
+	var projector = new THREE.Projector();
+	projector.unprojectVector( vector, camera );
+	var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+	var objects = [];
+	var intersects = raycaster.intersectObjects( objects );
+	if ( intersects.length > 0 ) {
+		intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+		var particle = new THREE.Sprite( particleMaterial );
+		particle.position = intersects[ 0 ].point;
+		particle.scale.x = particle.scale.y = 16;
+		scene.add( particle );
+	}
+	/*
+	// Parse all the faces
+	for ( var i in intersects ) {
+
+		intersects[ i ].face.material[ 0 ].color.setHex( Math.random() * 0xffffff | 0x80000000 );
+
+	}*/
+}
 			//
 
 function animate() {
