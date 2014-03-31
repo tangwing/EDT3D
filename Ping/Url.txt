@@ -1,0 +1,1 @@
+http://emploidutemps.univ-tours.fr/ade/custom/modules/plannings/direct_planning.jsp?login=ade-etudiant&password=test&projectId=16&showPianoWeeks=false&showPianoDays=false&showTree=false&weeks=28&resources=11708&days=0,1,2,3,4
