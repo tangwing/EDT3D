@@ -33,6 +33,12 @@ salle = function(id, no, name, position, size, form, direction){
 	this.form = form;
 	this.direction = direction;
 };
+
+point = function(id, position){
+	this.id = id;
+	this.position = position;
+};
+
 salle_groups = function(){
 	this.children = [];
 };
@@ -65,7 +71,7 @@ var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new sa
 			  new salle("7","011","Pascal",new salle_position(1015,87.5,0),new salle_size(290,175,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("8","013","Turing",new salle_position(722.5,87.5,0),new salle_size(295,175,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("9","015","Babagge",new salle_position(537.5,87.5,0),new salle_size(75,175,100),salle_form.Square,salle_direction.Horizontal),
-			  new salle("10","016","",new salle_position(462.5,105,0),new salle_size(75,140,100),salle_form.Square,salle_direction.Horizontal),
+			  new salle("10","016","BDE",new salle_position(462.5,105,0),new salle_size(75,140,100),salle_form.Square,salle_direction.Horizontal),
 			            //"11
 			  new salle("12","0", "Gardien",new salle_position(-87.5,61,101.5),new salle_size(175,125,100),salle_form.Square,salle_direction.Vertical),
 			  new salle("13","101", "",new salle_position(-200,61,101.5),new salle_size(50,125,100),salle_form.Square,salle_direction.Vertical),
@@ -89,7 +95,7 @@ var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new sa
 			  new salle("31","125","Windows B",new salle_position(655,87.5,101.5),new salle_size(160,175,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("32","126","Windows A",new salle_position(500,87.5,101.5),new salle_size(150,175,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("33","127","",new salle_position(390,105,101.5),new salle_size(70,140,100),salle_form.Square,salle_direction.Horizontal),
-			  new salle("34","128","",new salle_position(305,105,101.5),new salle_size(100,140,100),salle_form.Square,salle_direction.Horizontal),
+			  new salle("34","128","Scolarité",new salle_position(305,105,101.5),new salle_size(100,140,100),salle_form.Square,salle_direction.Horizontal),
 			            //"35
 			  new salle("36","201", "",new salle_position(-87.5,73.5,203),new salle_size(175,100,100),salle_form.Square,salle_direction.Vertical),
 			  new salle("37","202", "",new salle_position(-225,61,203),new salle_size(100,125,100),salle_form.Square,salle_direction.Vertical),
@@ -109,8 +115,8 @@ var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new sa
 			  new salle("51","217", "",new salle_position(407.5,-698,203),new salle_size(100,75,100), salle_form.Square, salle_direction.Oblique),
 			  new salle("52","0", "Local Serveur",new salle_position(307.5,-698,203),new salle_size(100,75,100), salle_form.Square, salle_direction.Oblique),
 			  new salle("53","224", "",new salle_position(207.5,-660,203),new salle_size(100,150,100), salle_form.Square, salle_direction.Oblique),
-			  new salle("54","222", "",new salle_position(97.5,-660,203),new salle_size(120,150,100), salle_form.Square, salle_direction.Oblique),
-			  new salle("55","223", "",new salle_position(-22.5,-660,203),new salle_size(120,150,100), salle_form.Square, salle_direction.Oblique),
+			  new salle("54","222", "OC",new salle_position(97.5,-660,203),new salle_size(120,150,100), salle_form.Square, salle_direction.Oblique),
+			  new salle("55","223", "RFAI",new salle_position(-22.5,-660,203),new salle_size(120,150,100), salle_form.Square, salle_direction.Oblique),
 			  new salle("56","224", "TP Systèmes",new salle_position(-237.5,-660,203),new salle_size(310,150,100), salle_form.Trapezoid, salle_direction.Oblique),
 			  new salle("57","228","S 228-229",new salle_position(675,125,203),new salle_size(120,100,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("58","229","",new salle_position(675,37.5,203),new salle_size(120,75,100),salle_form.Square,salle_direction.Horizontal),
@@ -118,10 +124,99 @@ var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new sa
 			  new salle("60","231","Unix B",new salle_position(340,105,203),new salle_size(170,140,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("61","124","Chaîne Production",new salle_position(922.5,87.5,203),new salle_size(375,175,100),salle_form.Square,salle_direction.Horizontal),
 			  ];
-var salles_stats = ["blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank",
-					"blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank",
-					"blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank",
-					"blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank","blank"];
+
+var points = [new point("0", new salle_position(140,120,-30)),
+			  new point("1", new salle_position(180,630,-30)),
+			  new point("2", new salle_position(540,260,-30)),
+			  new point("3", new salle_position(110,740,-30)),
+			  new point("4", new salle_position(130,760,-30)),
+			  new point("5", new salle_position(140,770,-30)),
+			  new point("6", new salle_position(360,440,-30)),
+			  new point("7", new salle_position(900,190,-30)),
+			  new point("8", new salle_position(600,190,-30)),
+			  new point("9", new salle_position(520,190,-30)),
+			  new point("10",new salle_position(480,190,-30)),
+			  new point("12", new salle_position(137,120,70)),
+			  new point("13", new salle_position(137,255,70)),
+			  new point("14", new salle_position(137,255,70)),
+			  new point("15", new salle_position(137,350,70)),
+			  new point("16", new salle_position(137,350,70)),
+			  new point("17", new salle_position(137,550,70)),
+			  new point("18", new salle_position(137,550,70)),
+			  new point("19", new salle_position(137,500,70)),
+			  new point("20", new salle_position(137,350,70)),
+			  new point("21", new salle_position(137,350,70)),
+			  new point("22", new salle_position(110,740,70)),
+			  new point("23", new salle_position(140,770,70)),
+			  new point("24", new salle_position(220,695,70)),
+			  new point("25", new salle_position(260,640,70)),
+			  new point("26", new salle_position(350,460,70)),
+			  new point("27", new salle_position(450,360,70)),
+			  new point("28", new salle_position(550,260,70)),
+			  new point("29", new salle_position(564,245,70)),
+			  new point("30", new salle_position(830,190,70)),
+			  new point("31", new salle_position(615,190,70)),
+			  new point("32", new salle_position(450,190,70)),
+			  new point("33", new salle_position(365,190,70)),
+			  new point("34", new salle_position(265,190,70)),
+			  new point("36", new salle_position(137,190,170)),
+			  new point("37", new salle_position(137,250,170)),
+			  new point("38", new salle_position(137,300,170)),
+			  new point("39", new salle_position(137,370,170)),
+			  new point("40", new salle_position(137,370,170)),
+			  new point("41", new salle_position(137,470,170)),
+			  new point("42", new salle_position(137,470,170)),
+			  new point("43", new salle_position(137,550,170)),
+			  new point("44", new salle_position(137,580,170)),
+			  new point("45", new salle_position(137,470,170)),
+			  new point("46", new salle_position(137,430,170)),
+			  new point("47", new salle_position(137,370,170)),
+			  new point("48", new salle_position(137,300,170)),
+			  new point("49", new salle_position(137,250,170)),
+			  new point("53", new salle_position(260,550,170)),
+			  new point("54", new salle_position(350,460,170)),
+			  new point("55", new salle_position(450,360,170)),
+			  new point("56", new salle_position(564,245,170)),
+			  new point("57", new salle_position(715,190,170)),
+			  new point("58", new salle_position(715,190,170)),
+			  new point("59", new salle_position(615,190,170)),
+			  new point("60", new salle_position(330,190,170)),
+			  new point("61", new salle_position(830,190,170)),
+			  
+
+			  new point("70",new salle_position(90,720,-30)),
+			  new point("71",new salle_position(110,620,-30)),
+			  new point("72",new salle_position(265,545,-30)),
+			  new point("73",new salle_position(340,190,-30)),
+			  new point("74",new salle_position(830,210,-30)),
+		      new point("75",new salle_position(230,120,-30)),
+			  new point("76",new salle_position(190,35,20)),
+			  new point("77",new salle_position(340,120,-30)),
+			  new point("78",new salle_position(150,660,-30)),
+			  new point("79",new salle_position(830,190,-30)),
+			  new point("80",new salle_position(750,220,20)),
+			  new point("81",new salle_position(90,720,70)),
+			  new point("82",new salle_position(50,680,20)),
+			  new point("83",new salle_position(137,600,70)),
+			  new point("84",new salle_position(137,670,70)),
+			  new point("85",new salle_position(210,600,70)),
+			  new point("86",new salle_position(265,545,70)),
+			  new point("87", new salle_position(700,220,120)),
+			  new point("88", new salle_position(750,220,70)),
+			  new point("89", new salle_position(137,190,70)),
+			  new point("90", new salle_position(190,190,70)),
+			  new point("91", new salle_position(760,190,70)),
+			  new point("92", new salle_position(190,35,120)),
+			  new point("95",new salle_position(90,720,170)),
+			  new point("96",new salle_position(50,680,120)),
+			  new point("97",new salle_position(137,620,170)),
+			  new point("98",new salle_position(110,620,170)),
+			  new point("99", new salle_position(190,190,170)),
+			  new point("100", new salle_position(700,220,120)),
+			  new point("101", new salle_position(750,220,170)),
+			  new point("102", new salle_position(190,35,170)),
+			  ];	
+	  
 var groups = new salle_groups();
 
 init();
@@ -157,10 +252,13 @@ function init() {
 		draw_salle(value,"blank");
 	});
 	
+	points.forEach(function(value, index, ar){
+		draw_salle(new salle('','','',value.position,new salle_size(1,1,1),salle_form.Square,salle_direction.Horizontal),"blank");
+	});
 	//change_salle_stats("Pascal","class");
 	draw_etage(1);
-	//draw_etage(2);
-	//draw_etage(3);
+	draw_etage(2);
+	draw_etage(3);
 }
 
 function change_salle_stats(name,stats)
