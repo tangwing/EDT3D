@@ -10,7 +10,6 @@ function testAnything()
 	log(path.toString());
 }
 
-
 ////////////////////////////////// Initialisation when loading page ///////////////////////////////
 /// Create the graph of rooms for finding the shortest path
 function getRoomGraph(){
@@ -167,6 +166,8 @@ Graph.prototype.dijkstra = function(src, dest) //Defined for each object
 	}
 	return path;
 }
+
+
 
 /////////////////////// Date conversion /////////////////////
 Date.prototype.yyyymmdd = function() {

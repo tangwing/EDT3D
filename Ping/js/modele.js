@@ -125,97 +125,97 @@ var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new sa
 			  new salle("61","124","Chaîne Production",new salle_position(922.5,87.5,203),new salle_size(375,175,100),salle_form.Square,salle_direction.Horizontal),
 			  ];
 
-var points = [new point("0", new salle_position(140,120,-30)),
-			  new point("1", new salle_position(180,630,-30)),
-			  new point("2", new salle_position(540,260,-30)),
-			  new point("3", new salle_position(110,740,-30)),
-			  new point("4", new salle_position(130,760,-30)),
-			  new point("5", new salle_position(140,770,-30)),
-			  new point("6", new salle_position(360,440,-30)),
-			  new point("7", new salle_position(900,190,-30)),
-			  new point("8", new salle_position(600,190,-30)),
-			  new point("9", new salle_position(520,190,-30)),
-			  new point("10",new salle_position(480,190,-30)),
-			  new point("12", new salle_position(137,120,70)),
-			  new point("13", new salle_position(137,255,70)),
-			  new point("14", new salle_position(137,255,70)),
-			  new point("15", new salle_position(137,350,70)),
-			  new point("16", new salle_position(137,350,70)),
-			  new point("17", new salle_position(137,550,70)),
-			  new point("18", new salle_position(137,550,70)),
-			  new point("19", new salle_position(137,500,70)),
-			  new point("20", new salle_position(137,350,70)),
-			  new point("21", new salle_position(137,350,70)),
-			  new point("22", new salle_position(110,740,70)),
-			  new point("23", new salle_position(140,770,70)),
-			  new point("24", new salle_position(220,695,70)),
-			  new point("25", new salle_position(260,640,70)),
-			  new point("26", new salle_position(350,460,70)),
-			  new point("27", new salle_position(450,360,70)),
-			  new point("28", new salle_position(550,260,70)),
-			  new point("29", new salle_position(564,245,70)),
-			  new point("30", new salle_position(830,190,70)),
-			  new point("31", new salle_position(615,190,70)),
-			  new point("32", new salle_position(450,190,70)),
-			  new point("33", new salle_position(365,190,70)),
-			  new point("34", new salle_position(265,190,70)),
-			  new point("36", new salle_position(137,190,170)),
-			  new point("37", new salle_position(137,250,170)),
-			  new point("38", new salle_position(137,300,170)),
-			  new point("39", new salle_position(137,370,170)),
-			  new point("40", new salle_position(137,370,170)),
-			  new point("41", new salle_position(137,470,170)),
-			  new point("42", new salle_position(137,470,170)),
-			  new point("43", new salle_position(137,550,170)),
-			  new point("44", new salle_position(137,580,170)),
-			  new point("45", new salle_position(137,470,170)),
-			  new point("46", new salle_position(137,430,170)),
-			  new point("47", new salle_position(137,370,170)),
-			  new point("48", new salle_position(137,300,170)),
-			  new point("49", new salle_position(137,250,170)),
-			  new point("53", new salle_position(260,550,170)),
-			  new point("54", new salle_position(350,460,170)),
-			  new point("55", new salle_position(450,360,170)),
-			  new point("56", new salle_position(564,245,170)),
-			  new point("57", new salle_position(715,190,170)),
-			  new point("58", new salle_position(715,190,170)),
-			  new point("59", new salle_position(615,190,170)),
-			  new point("60", new salle_position(330,190,170)),
-			  new point("61", new salle_position(830,190,170)),
-			  
-
-			  new point("70",new salle_position(90,720,-30)),
-			  new point("71",new salle_position(110,620,-30)),
-			  new point("72",new salle_position(265,545,-30)),
-			  new point("73",new salle_position(340,190,-30)),
-			  new point("74",new salle_position(830,210,-30)),
-		      new point("75",new salle_position(230,120,-30)),
-			  new point("76",new salle_position(190,35,20)),
-			  new point("77",new salle_position(340,120,-30)),
-			  new point("78",new salle_position(150,660,-30)),
-			  new point("79",new salle_position(830,190,-30)),
-			  new point("80",new salle_position(750,220,20)),
-			  new point("81",new salle_position(90,720,70)),
-			  new point("82",new salle_position(50,680,20)),
-			  new point("83",new salle_position(137,600,70)),
-			  new point("84",new salle_position(137,670,70)),
-			  new point("85",new salle_position(210,600,70)),
-			  new point("86",new salle_position(265,545,70)),
-			  new point("87", new salle_position(700,220,120)),
-			  new point("88", new salle_position(750,220,70)),
-			  new point("89", new salle_position(137,190,70)),
-			  new point("90", new salle_position(190,190,70)),
-			  new point("91", new salle_position(760,190,70)),
-			  new point("92", new salle_position(190,35,120)),
-			  new point("95",new salle_position(90,720,170)),
-			  new point("96",new salle_position(50,680,120)),
-			  new point("97",new salle_position(137,620,170)),
-			  new point("98",new salle_position(110,620,170)),
-			  new point("99", new salle_position(190,190,170)),
-			  new point("100", new salle_position(700,220,120)),
-			  new point("101", new salle_position(750,220,170)),
-			  new point("102", new salle_position(190,35,170)),
-			  ];	
+var points = {	0: new THREE.Vector3( 140,120,-30),
+				1: new THREE.Vector3( 180,630,-30),
+			    2: new THREE.Vector3( 540,260,-30),
+			    3: new THREE.Vector3( 110,740,-30),
+			    4: new THREE.Vector3( 130,760,-30),
+				5: new THREE.Vector3( 140,770,-30),
+				6: new THREE.Vector3( 360,440,-30),
+				7: new THREE.Vector3( 900,190,-30),
+				8: new THREE.Vector3( 600,190,-30),
+				9: new THREE.Vector3( 520,190,-30),
+				10: new THREE.Vector3( 480,190,-30),
+				12: new THREE.Vector3( 137,120,70),
+				13: new THREE.Vector3( 137,255,70),
+				14: new THREE.Vector3( 137,255,70),
+				15: new THREE.Vector3( 137,350,70),
+				16: new THREE.Vector3( 137,350,70),
+				17: new THREE.Vector3( 137,550,70),
+				18: new THREE.Vector3( 137,550,70),
+				19: new THREE.Vector3( 137,500,70),
+			  	20: new THREE.Vector3(137,350,70),
+			    21: new THREE.Vector3(137,350,70),
+				22: new THREE.Vector3(110,740,70),
+				23: new THREE.Vector3(140,770,70),
+				24: new THREE.Vector3(220,695,70),
+				25: new THREE.Vector3(260,640,70),
+				26: new THREE.Vector3(350,460,70),
+				27: new THREE.Vector3(450,360,70),
+				28: new THREE.Vector3(550,260,70),
+				29: new THREE.Vector3(564,245,70),
+				30: new THREE.Vector3(830,190,70),
+				31: new THREE.Vector3(615,190,70),
+				32: new THREE.Vector3(450,190,70),
+				33: new THREE.Vector3(365,190,70),
+				34: new THREE.Vector3(265,190,70),
+				36: new THREE.Vector3(137,190,170),
+				37: new THREE.Vector3(137,250,170),
+				38: new THREE.Vector3(137,300,170),
+				39: new THREE.Vector3(137,370,170),
+				40: new THREE.Vector3(137,370,170),
+				41: new THREE.Vector3(137,470,170),
+				42: new THREE.Vector3(137,470,170),
+				43: new THREE.Vector3(137,550,170),
+				44: new THREE.Vector3(137,580,170),
+				45: new THREE.Vector3(137,470,170),
+				46: new THREE.Vector3(137,430,170),
+				47: new THREE.Vector3(137,370,170),
+				48: new THREE.Vector3(137,300,170),
+				49: new THREE.Vector3(137,250,170),
+				50: new THREE.Vector3(110,740,170),
+				51: new THREE.Vector3(140,770,170),
+				53: new THREE.Vector3(260,550,170),
+				54: new THREE.Vector3(350,460,170),
+				55: new THREE.Vector3(450,360,170),
+				56: new THREE.Vector3(564,245,170),
+				57: new THREE.Vector3(715,190,170),
+				58: new THREE.Vector3(715,190,170),
+				59: new THREE.Vector3(615,190,170),
+				60: new THREE.Vector3(330,190,170),
+				61: new THREE.Vector3(830,190,170),
+				
+				70: new THREE.Vector3(90,720,-30),
+				71: new THREE.Vector3(110,620,-30),
+				72: new THREE.Vector3(265,545,-30),
+				73: new THREE.Vector3(340,190,-30),
+				74: new THREE.Vector3(830,210,-30),
+				75: new THREE.Vector3(230,120,-30),
+				76: new THREE.Vector3(190,35,20),
+				77: new THREE.Vector3(340,120,-30),
+				78: new THREE.Vector3(150,660,-30),
+				79: new THREE.Vector3(830,190,-30),
+				80: new THREE.Vector3(750,220,20),
+				81: new THREE.Vector3(90,720,70),
+				82: new THREE.Vector3(50,680,20),
+				83: new THREE.Vector3(137,600,70),
+				84: new THREE.Vector3(137,670,70),
+				85: new THREE.Vector3(210,600,70),
+				86: new THREE.Vector3(265,545,70),
+				87: new THREE.Vector3(700,220,120),
+				88: new THREE.Vector3(750,220,70),
+				89: new THREE.Vector3(137,190,70),
+				90: new THREE.Vector3(190,190,70),
+				91: new THREE.Vector3(760,190,70),
+				92: new THREE.Vector3(190,35,120),
+				95: new THREE.Vector3(90,720,170),
+				96: new THREE.Vector3(50,680,120),
+				97: new THREE.Vector3(137,620,170),
+				98: new THREE.Vector3(110,620,170),
+				99: new THREE.Vector3(190,190,170),
+				100: new THREE.Vector3(700,220,120),
+				101: new THREE.Vector3(750,220,170),
+				102: new THREE.Vector3(190,35,170)};
 	  
 var groups = new salle_groups();
 
@@ -252,14 +252,61 @@ function init() {
 		draw_salle(value,"blank");
 	});
 	
+	/*
 	points.forEach(function(value, index, ar){
 		draw_salle(new salle('','','',value.position,new salle_size(1,1,1),salle_form.Square,salle_direction.Horizontal),"blank");
-	});
+	});*/
+
 	change_salle_stats("Pascal","class");
 	change_salle_stats("TP Systèmes","class");
 	draw_etage(1);
-	draw_etage(2);
-	draw_etage(3);
+	//draw_etage(2);
+	//draw_etage(3);
+	
+	var graph = getRoomGraph();
+	var path = graph.dijkstra(54,2); //从oc到turing怎么走？！
+	log(path.toString());
+	draw_path(path)
+}
+
+function draw_path(path)
+{
+/*
+	var material = new THREE.LineDashedMaterial( { color: 0xffaa00, dashSize: 2, gapSize: 2, linewidth: 1 } );
+
+	var geometry = new THREE.Geometry();
+	for(var i=0; i<path.length; i++)
+	{
+		geometry.vertices.push(points[path[i]]);
+	}
+	geometry.computeLineDistances();
+	var line = new THREE.Line( geometry, material, THREE.LinePieces );
+	scene.add( line );*/
+	var vertices = [];
+	for(var i=0; i<path.length; i++)
+	{
+		vertices.push(points[path[i]]);
+	}
+	var path_line = new THREE.SplineCurve3(vertices);
+	var path_tube = new THREE.TubeGeometry(path_line, 100, 2, 3, true, false);
+	addGeometry(path_tube, 0xffff00);
+}
+
+function addGeometry( geometry, color ) {
+
+	// 3d shape
+	tubeMesh = THREE.SceneUtils.createMultiMaterialObject( geometry, [
+				new THREE.MeshLambertMaterial({
+					color: 0xffff00,
+					transparent: true
+				}),
+				new THREE.MeshBasicMaterial({
+					color: 0xffff00,
+					opacity: 0.3,
+					wireframe: true,
+					transparent: true
+			})]);
+	scene.add( tubeMesh );
 }
 
 function change_salle_stats(name,stats)
@@ -289,6 +336,7 @@ function draw_salle(salle,stats)
 		//geometry.position.y = position[1];
 		//geometry.position.z = position[2];
 		var material = new THREE.MeshBasicMaterial( { color: salle_color[stats], transparent: true, opacity: 0.7 } );//alert(2);
+
 		
 		var cube = new THREE.Mesh( geometry, material );
 		cube.position.x = position.x;
