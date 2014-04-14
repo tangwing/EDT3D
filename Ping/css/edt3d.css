@@ -13,9 +13,12 @@
 	height: calc(100% - 100px);
 	border: 0px;
 }
+#datepicker{
+	width: 140px;
+}
 
-#page-header{
-	padding-bottom:7px; margin-bottom:20px;
+.page-header{
+	padding-bottom:5px; margin-bottom:20px;
 }
 
 .container_body{

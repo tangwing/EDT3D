@@ -288,7 +288,7 @@ function draw_path(path)
 		vertices.push(points[path[i]]);
 	}
 	var path_line = new THREE.SplineCurve3(vertices);
-	var path_tube = new THREE.TubeGeometry(path_line, 100, 2, 3, true, false);
+	var path_tube = new THREE.TubeGeometry(path_line, 100, 2, 3, false, false);
 	addGeometry(path_tube, 0xffff00);
 }
 
@@ -297,11 +297,11 @@ function addGeometry( geometry, color ) {
 	// 3d shape
 	tubeMesh = THREE.SceneUtils.createMultiMaterialObject( geometry, [
 				new THREE.MeshLambertMaterial({
-					color: 0xffff00,
+					color: color,
 					transparent: true
 				}),
 				new THREE.MeshBasicMaterial({
-					color: 0xffff00,
+					color: color,
 					opacity: 0.3,
 					wireframe: true,
 					transparent: true
@@ -311,12 +311,15 @@ function addGeometry( geometry, color ) {
 
 function change_salle_stats(name,stats)
 {
-	var group = groups.getGroupByName(name);
+	if(name != "")
+	{
+		var group = groups.getGroupByName(name);
 	
-	group.children.forEach(function(value){
-		var color = salle_color[stats];
-		value.material.color.setHex(color);
-	})
+		group.children.forEach(function(value){
+			var color = salle_color[stats];
+			value.material.color.setHex(color);
+		});
+	}
 }
 	
 function draw_salle(salle,stats)
