@@ -1,7 +1,7 @@
 /*-------Structure----------*/
 var salle_color = {
-	blank:0x000000,
-	class:0xFFFF00,
+	blank:0xFFFFFF,
+	class:0x0000FF,
 	NotStarted:0x86B404,
 	Finished:0xD8F781,
 };
@@ -255,7 +255,8 @@ function init() {
 	points.forEach(function(value, index, ar){
 		draw_salle(new salle('','','',value.position,new salle_size(1,1,1),salle_form.Square,salle_direction.Horizontal),"blank");
 	});
-	//change_salle_stats("Pascal","class");
+	change_salle_stats("Pascal","class");
+	change_salle_stats("TP Systèmes","class");
 	draw_etage(1);
 	draw_etage(2);
 	draw_etage(3);
@@ -287,7 +288,7 @@ function draw_salle(salle,stats)
 		//geometry.position.x = 100;
 		//geometry.position.y = position[1];
 		//geometry.position.z = position[2];
-		var material = new THREE.MeshBasicMaterial( { color: salle_color[stats], transparent: true, opacity: 0.5 } );//alert(2);
+		var material = new THREE.MeshBasicMaterial( { color: salle_color[stats], transparent: true, opacity: 0.7 } );//alert(2);
 		
 		var cube = new THREE.Mesh( geometry, material );
 		cube.position.x = position.x;
@@ -352,7 +353,8 @@ function draw_salle(salle,stats)
 					  new THREE.Vector3(position.x-size.length/2, position.y-size.width/2,position.z-size.height/2)];
 	}
 	var indexs = [[1,2,4],[3,5],[3,6],[7],[5,6],[7],[7]];
-	var material = new THREE.LineBasicMaterial({color: salle_color[stats]});
+	var material = new THREE.LineBasicMaterial({color: 0x000000});
+	//var material = new THREE.LineBasicMaterial({color: salle_color[stats]});
 	indexs.forEach(function(value, index, ar){
 		value.forEach(function(val){
 			var geometry = new THREE.Geometry();

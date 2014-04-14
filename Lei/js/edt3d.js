@@ -7,11 +7,33 @@ function testAnything()
 	//log(date.getFullYear()+" "+date.getMonth()+" "+date.getDay()+" "+ date.getHours()+" "+ date.getMinutes())
 	var graph = getRoomGraph();
 	var path = graph.dijkstra(54,8); //从oc到turing怎么走？！
+	//path = graph.dijkstra(59,60); 
 	log(path.toString());
+
+	$.post( "http://edt.univ-tours.fr/direct/gwtdirectplanning/CorePlanningServiceProxy ", { func: "getNameAndTime" }, function( data ) {
+	  console.log( data); // John
+	  //console.log( data.time ); // 2pm
+	}, "json");
+}
+
+////////////////////////////////// Global functions ///////////////////////////////
+/// Draw path according to a list of critical points
+/// path: an array containing indexes of control points
+function drawPath(path){
+	var geometry = new THREE.Geometry();
+	for(var i=0; i<path.length-1; i++){
+		//drawLine(points[path[i]], points[path[i+1]]);
+		geometry.vertices.push(points[path[i]]);
+		geometry.vertices.push(points[path[i+1]]);
+	}
+	var material = new THREE.LineBasicMaterial({
+        color: 0x0000ff
+    });
+    var line = new THREE.Line( geometry, material );
+
 }
 
 
-////////////////////////////////// Initialisation when loading page ///////////////////////////////
 /// Create the graph of rooms for finding the shortest path
 function getRoomGraph(){
 	if(this.g) return this.g;
@@ -26,6 +48,7 @@ function getRoomGraph(){
 	this.g.addNeighborChain(2,[73,10,9,8],[37,25,5,15]);
 	this.g.addNeighbor(76,75,20);
 	this.g.addNeighbor(7,79,23);
+	this.g.addNeighbor(12,90,20);
 	//1er Etage
 	this.g.addNeighborChain(84, [81,22,23,24,25,85,84,83,82],[20,5,5,20,20,5,20,5,25]);
 	this.g.addNeighborChain(83,[17,18,19,15,16,20,21,13,14,89,90,92,76],
