@@ -56,8 +56,12 @@ salle_groups.prototype = {
 					},
 };
 /*------------variable--------------*/
-var camera, scene, renderer, container;
+var camera, splineCamera, scene, renderer, container;
 var controls;
+var animCamEnabled =false;
+var tube;
+var binormal = new THREE.Vector3();
+var normal = new THREE.Vector3();
 
 var lines=[];
 
@@ -227,11 +231,13 @@ function init() {
 	container = document.getElementById( 'container' );
 	// CAMERA
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+	splineCamera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	
 	camera.position.set( 0, 0, 1000 );
 	
 	// CONTROLS
 	controls = new THREE.TrackballControls ( camera );
+	//controls = new THREE.OrbitControls( camera );
 	
 	// SCENE
 	scene = new THREE.Scene();
@@ -259,14 +265,28 @@ function init() {
 
 	change_salle_stats("Pascal","class");
 	change_salle_stats("TP Systèmes","class");
-	draw_etage(1);
-	//draw_etage(2);
-	//draw_etage(3);
+	//draw_etage(1);
+	draw_etage(2);
+	draw_etage(3);
 	
 	var graph = getRoomGraph();
 	var path = graph.dijkstra(54,2); //从oc到turing怎么走？！
 	log(path.toString());
 	draw_path(path)
+
+	//I'd like to translate the whole scene
+	//scene.translateX(1000)
+	//camera.position.x+=500;
+	//camera.lookAt(new THREE.Vector3(500,0,0));
+//scene.add(camera);
+
+	scene.children.forEach(function(obj){
+		//var axe = obj.worldToLocal(new THREE.Vector3(-1,0,0));
+		obj.position.x-=500;
+		obj.position.y-=400;
+		//obj.translateX(obj.worldToLocal(new THREE.Vector3(-1,0,0)));
+		//obj.translateOnAxis(axe, 100);
+	});
 }
 
 function draw_path(path)
@@ -282,14 +302,22 @@ function draw_path(path)
 	geometry.computeLineDistances();
 	var line = new THREE.Line( geometry, material, THREE.LinePieces );
 	scene.add( line );*/
+	var geometry = new THREE.Geometry();
 	var vertices = [];
 	for(var i=0; i<path.length; i++)
 	{
 		vertices.push(points[path[i]]);
+		geometry.vertices.push(points[path[i]]);
 	}
 	var path_line = new THREE.SplineCurve3(vertices);
-	var path_tube = new THREE.TubeGeometry(path_line, 100, 2, 3, true, false);
-	addGeometry(path_tube, 0xffff00);
+	tube = new THREE.TubeGeometry(path_line, 100, 2, 3, false, false);
+	addGeometry(tube, 0xffff00);
+
+	
+	//geometry.vertices = vertices;
+	//var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 30,opacity: 0.5,  vertexColors:THREE.VertexColors } ) );
+	//line.scale.x = line.scale.y = line.scale.z =  5;
+	//scene.add(line);
 }
 
 function addGeometry( geometry, color ) {
@@ -297,11 +325,11 @@ function addGeometry( geometry, color ) {
 	// 3d shape
 	tubeMesh = THREE.SceneUtils.createMultiMaterialObject( geometry, [
 				new THREE.MeshLambertMaterial({
-					color: 0xffff00,
+					color: color,
 					transparent: true
 				}),
 				new THREE.MeshBasicMaterial({
-					color: 0xffff00,
+					color: color,
 					opacity: 0.3,
 					wireframe: true,
 					transparent: true
@@ -429,7 +457,7 @@ function draw_salle(salle,stats)
 }
 
 function draw_etage(couche){
-	var material = new THREE.LineBasicMaterial({color: 0xFFFFFF});
+	var material = new THREE.LineBasicMaterial({color: 0xFADE07,transparent: false, opacity:0.1});
 	if(couche == 1)
 	{
 		var premier_etage = new THREE.Geometry(),
@@ -509,6 +537,64 @@ function animate() {
 	render();
 }
 
+var btime;
+function animCam()
+{
+	animCamEnabled = animCamEnabled===false;
+	if(animCamEnabled)btime = Date.now();
+}
+
+
 function render() {
-	renderer.render( scene, camera );
+	// Try Animate Camera Along Spline
+		if(animCamEnabled === true)
+		{
+			var scale=1;
+			var time = Date.now();
+			var looptime = 20 * 1000;
+			var t = ( (time) % looptime ) / looptime;
+
+			var pos = tube.path.getPointAt( t );
+			pos.multiplyScalar( scale );
+
+			// interpolation
+			var segments = tube.tangents.length;
+			var pickt = t * segments;
+			var pick = Math.floor( pickt );
+			var pickNext = ( pick + 1 ) % segments;
+
+			binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
+			binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
+
+
+			var dir = tube.path.getTangentAt( t );
+
+			var offset = 15;
+
+			normal.copy( binormal ).cross( dir );
+
+			// We move on a offset on its binormal
+			pos.add( normal.clone().multiplyScalar( offset ) );
+
+			splineCamera.position = pos;
+			//cameraEye.position = pos;
+
+
+			// Camera Orientation 1 - default look at
+			// splineCamera.lookAt( lookAt );
+
+			// Using arclength for stablization in look ahead.
+			var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 ).multiplyScalar( scale );
+
+			// Camera Orientation 2 - up orientation via normal
+			splineCamera.matrix.lookAt(splineCamera.position, lookAt, normal);
+			splineCamera.rotation.setFromRotationMatrix( splineCamera.matrix, splineCamera.rotation.order );
+
+			//cameraHelper.update();
+
+			//parent.rotation.y += ( targetRotation - parent.rotation.y ) * 0.05;
+
+			renderer.render( scene, splineCamera);
+		}
+		else renderer.render( scene, camera );
 }

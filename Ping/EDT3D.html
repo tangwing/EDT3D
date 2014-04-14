@@ -9,13 +9,14 @@
 	<script type="text/javascript" src="js/libs/three.js"></script>
 	<script type="text/javascript" src="js/libs/stats.min.js"></script>
 	<script type="text/javascript" src="js/libs/TrackballControls.js"></script>
+	<script type="text/javascript" src="js/libs/OrbitControls.js"></script>
     <script type="text/javascript" src="js/tools.js"></script>
 </head>
 
 <body class="container_body">
 	<div class="form-group">
     	<label for="fileInput">File input</label>
-		<input type="file" id="fileInput" />
+		<input type="file" id="fileInput" /><button onClick=animCam();>ShowMeThePath</button>
   	</div>
     <div id="container">
 		<script src="js/modele.js"></script>
