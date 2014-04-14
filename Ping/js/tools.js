@@ -167,7 +167,12 @@ Graph.prototype.dijkstra = function(src, dest) //Defined for each object
 	return path;
 }
 
-
+function yyyymmdd(date){
+	var strdd = date.substr(0,2);
+	var strmm = date.substr(3,2);
+	var stryyyy = date.substr(6,4);
+	return stryyyy + strmm + strdd;
+}
 
 /////////////////////// Date conversion /////////////////////
 Date.prototype.yyyymmdd = function() {
