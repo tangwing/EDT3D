@@ -10,7 +10,6 @@ function testAnything()
 	log(path.toString());
 }
 
-
 ////////////////////////////////// Initialisation when loading page ///////////////////////////////
 /// Create the graph of rooms for finding the shortest path
 function getRoomGraph(){
@@ -168,6 +167,8 @@ Graph.prototype.dijkstra = function(src, dest) //Defined for each object
 	return path;
 }
 
+
+
 /////////////////////// Date conversion /////////////////////
 Date.prototype.yyyymmdd = function() {
    var yyyy = this.getFullYear().toString();
@@ -189,14 +190,6 @@ Date.prototype.fromStampICS = function(str)
 
 /////////////////////// No need to go down /////////////////////////
 function log(msg){console.log(msg)}
-
-function testAnything()
-{
-	var date = new Date().fromStampICS("20140507T141500Z")
-	log("[testAnything]")
-	log(date.getFullYear()+" "+date.getMonth()+" "+date.getDay()+" "+ date.getHours()+" "+ date.getMinutes())
-}
-
 
 function test3js()
 {
