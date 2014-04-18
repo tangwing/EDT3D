@@ -65,7 +65,7 @@ var normal = new THREE.Vector3();
 
 var lines=[];
 
-var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new salle_size(175,125,100),salle_form.Square,salle_direction.Vertical),
+var salles = [new salle("0","0", "",new salle_position(-87.5,61,0),new salle_size(175,125,100),salle_form.Square,salle_direction.Vertical),
 			  new salle("1","001", "Bibliotheque", new salle_position(-437.5,125.5,0),new salle_size(525,255,100), salle_form.Trapezoid, salle_direction.Vertical),
 			  new salle("2","008", "Cafeteria",new salle_position(-200,-660,0),new salle_size(385,150,100), salle_form.Trapezoid, salle_direction.Oblique),
 			  new salle("3","002", "",new salle_position(507,-623,0),new salle_size(100,75,100), salle_form.Square, salle_direction.Oblique),
@@ -77,7 +77,7 @@ var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new sa
 			  new salle("9","015","Babagge",new salle_position(537.5,87.5,0),new salle_size(75,175,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("10","016","BDE",new salle_position(462.5,105,0),new salle_size(75,140,100),salle_form.Square,salle_direction.Horizontal),
 			            //"11
-			  new salle("12","0", "Gardien",new salle_position(-87.5,61,101.5),new salle_size(175,125,100),salle_form.Square,salle_direction.Vertical),
+			  new salle("12","0", "",new salle_position(-87.5,61,101.5),new salle_size(175,125,100),salle_form.Square,salle_direction.Vertical),
 			  new salle("13","101", "",new salle_position(-200,61,101.5),new salle_size(50,125,100),salle_form.Square,salle_direction.Vertical),
 			  new salle("14","102", "",new salle_position(-262.5,49,101.5),new salle_size(75,101,100),salle_form.Square,salle_direction.Vertical),
 			  new salle("15","103", "",new salle_position(-330,49,101.5),new salle_size(60,101,100),salle_form.Square,salle_direction.Vertical),
@@ -93,7 +93,7 @@ var salles = [new salle("0","0", "Gardien",new salle_position(-87.5,61,0),new sa
 			  new salle("25","113", "",new salle_position(220,-698,101.5),new salle_size(75,75,100), salle_form.Square, salle_direction.Oblique),
 			  new salle("26","118", "Boole",new salle_position(117.5,-660,101.5),new salle_size(130,150,100), salle_form.Square, salle_direction.Oblique),
 			  new salle("27","119", "Von Neumann",new salle_position(-15,-660,101.5),new salle_size(135,150,100), salle_form.Square, salle_direction.Oblique),
-			  new salle("28","120", "Shannon",new salle_position(-305,-660,101.5),new salle_size(175,150,100), salle_form.Trapezoid, salle_direction.Oblique),
+			  new salle(28,"120", "Shannon",new salle_position(-305,-660,101.5),new salle_size(175,150,100), salle_form.Trapezoid, salle_direction.Oblique),
 			  new salle("29","121", "",new salle_position(-150,-660,101.5),new salle_size(135,150,100), salle_form.Square, salle_direction.Oblique),
 			  new salle("30","124","Chaîne Production",new salle_position(922.5,87.5,101.5),new salle_size(375,175,100),salle_form.Square,salle_direction.Horizontal),
 			  new salle("31","125","Windows B",new salle_position(655,87.5,101.5),new salle_size(160,175,100),salle_form.Square,salle_direction.Horizontal),
@@ -272,11 +272,12 @@ function init() {
 	var graph = getRoomGraph();
 	var path = graph.dijkstra(54,2); //从oc到turing怎么走？！
 	log(path.toString());
-	draw_path(path)
+	draw_path(path);
 
 	//I'd like to translate the whole scene
 	//scene.translateX(1000)
 	//camera.position.x+=500;
+	//camera.lookAt(new THREE.Vector3(500,0,0));
 	//camera.lookAt(new THREE.Vector3(500,0,0));
 //scene.add(camera);
 
@@ -287,6 +288,19 @@ function init() {
 		//obj.translateX(obj.worldToLocal(new THREE.Vector3(-1,0,0)));
 		//obj.translateOnAxis(axe, 100);
 	});
+}
+
+function search_point_by_name(name)
+{
+	if(name == "Entrance")
+		return 77;
+	else if(name != ""){
+		for(var i=0; i<salles.length; i++){
+			if(salles[i].name == name)
+				return salles[i].id;
+		}
+	}
+	return -1;
 }
 
 function draw_path(path)
@@ -316,7 +330,6 @@ function draw_path(path)
 }
 
 function addGeometry( geometry, color ) {
-
 	// 3d shape
 	tubeMesh = THREE.SceneUtils.createMultiMaterialObject( geometry, [
 				new THREE.MeshLambertMaterial({

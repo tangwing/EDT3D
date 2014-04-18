@@ -1,7 +1,10 @@
 var date;
 
 $(function() {
-    window.top.$("#datepicker").datepicker({
+    
+	window.top.$("#fileInput").filestyle({classInput: "input-small", icon: false, buttonText: "file"});
+	
+	window.top.$("#datepicker").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "dd-mm-yy",
@@ -14,4 +17,5 @@ $(function() {
 					}
 				}
     });
+	
 });

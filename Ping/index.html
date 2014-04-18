@@ -11,6 +11,7 @@
     <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
     <script type="text/javascript" src="js/libs/jquery-1.11.0.js"></script>
     <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/libs/bootstrap-filestyle.min.js"></script>
     <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
 
 </head>
@@ -30,14 +31,22 @@
 				<ul class="nav nav-list">
 					<li>
 						<label class="tree-toggle nav-header">
-							File input :
-							<input type="file" id="fileInput" />
+							Course file input :
+							<input id="fileInput" type="file" data-classInput="input-small" data-icon="false" style="height:10">
 						</label>
 					</li>
                     <li class="divider"></li>
-                    <li><label class="tree-toggle nav-header">Date : &nbsp <input type="text" id="datepicker">
+                    <li><label class="tree-toggle nav-header">Date : &nbsp <input type="text" id="datepicker" disabled="disabled"/>
 						</label>
 						<label class="tree-toggle nav-header">Path : &nbsp 
+							<select class="form-control" id="path_start" disabled="disabled">
+								<option></option>
+								<option>Entrance</option>
+							</select>
+							<select class="form-control" id="path_end" disabled="disabled">
+								<option></option>
+								<option>Entrance</option>
+							</select>
 						</label>
                     </li>
                 </ul>
