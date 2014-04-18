@@ -267,7 +267,7 @@ function init() {
 	change_salle_stats("TP Systèmes","class");
 	//draw_etage(1);
 	draw_etage(2);
-	draw_etage(3);
+	//draw_etage(3);
 	
 	var graph = getRoomGraph();
 	var path = graph.dijkstra(54,2); //从oc到turing怎么走？！
@@ -279,11 +279,11 @@ function init() {
 	//camera.position.x+=500;
 	//camera.lookAt(new THREE.Vector3(500,0,0));
 //scene.add(camera);
-
+//scene.position.x -= 500;
 	scene.children.forEach(function(obj){
 		//var axe = obj.worldToLocal(new THREE.Vector3(-1,0,0));
-		obj.position.x-=500;
-		obj.position.y-=400;
+		obj.position.x-=450;
+		obj.position.y-=350;
 		//obj.translateX(obj.worldToLocal(new THREE.Vector3(-1,0,0)));
 		//obj.translateOnAxis(axe, 100);
 	});
@@ -441,10 +441,15 @@ function draw_salle(salle,stats)
 	});
 	
 	if(direction == salle_direction.Vertical){
-		group.rotation.z = - Math.PI * 0.5;;
+		group.position.x -= 100;
+		group.rotation.z = - Math.PI * 0.5;
 	}
 	else if(direction == salle_direction.Oblique){
+		group.position.x += 100;
+		//group.position.y += 100;
 		group.rotation.z = Math.PI * 0.75;
+	}else{
+		group.position.y -= 100;
 	}
 	scene.add(group);
 	
@@ -455,7 +460,7 @@ function draw_salle(salle,stats)
 }
 
 function draw_etage(couche){
-	var material = new THREE.LineBasicMaterial({color: 0xFADE07,transparent: false, opacity:0.1});
+	var material = new THREE.LineBasicMaterial({color: 0xFADE07,transparent: true, opacity:0.4});
 	if(couche == 1)
 	{
 		var premier_etage = new THREE.Geometry(),
@@ -469,6 +474,7 @@ function draw_etage(couche){
 		var mesh = new THREE.Mesh(premier_etage, material);
 		scene.add(mesh);
 	}
+var trans = 100;
 	if(couche == 2)
 	{
 		var deuxieme_etage = new THREE.Geometry(),
@@ -476,12 +482,34 @@ function draw_etage(couche){
 					new THREE.Vector3(255,0,51),
 					new THREE.Vector3(255,535,51),
 					new THREE.Vector3(0,790,51),
-					new THREE.Vector3(255,200,51),
-					new THREE.Vector3(1200,0,51),
-					new THREE.Vector3(1200,200,51),
+					new THREE.Vector3(255,170,51),
+					new THREE.Vector3(1200,0,51),   //5
+					new THREE.Vector3(1200,170,51), //6
 					new THREE.Vector3(126,915,51),
 					new THREE.Vector3(620,170,51),
 					new THREE.Vector3(870,170,51)];
+		//Translations
+		vertices[0].x += -trans;
+		vertices[0].y += -trans;
+		vertices[1].x += -trans;
+		vertices[1].y += -trans;
+		vertices[2].x += -trans;
+		vertices[2].y += 2*trans;
+		vertices[3].x += -trans;
+		vertices[3].y += 2*trans;
+		vertices[4].x += -trans;
+		vertices[4].y += -0.5*trans;
+		vertices[5].y += -trans;
+		vertices[6].y += -0.5*trans;
+		vertices[7].x += -trans;
+		vertices[7].y += 2*trans;
+		 vertices[8].x += 2*trans;
+		 vertices[8].y += -trans;
+		 vertices[9].x += 2*trans;
+		// //vertices[9].x += trans;
+		 vertices[9].y += -trans;
+
+
 		deuxieme_etage.vertices = vertices;
 		deuxieme_etage.faces.push(new THREE.Face3(0, 1, 2),new THREE.Face3(0,2,3),
 							      new THREE.Face3(0, 2, 1),new THREE.Face3(0,3,2),
@@ -500,12 +528,24 @@ function draw_etage(couche){
 					new THREE.Vector3(255,0,152),
 					new THREE.Vector3(255,535,152),
 					new THREE.Vector3(0,790,152),
-					new THREE.Vector3(255,200,152),
+					new THREE.Vector3(255,170,152),
 					new THREE.Vector3(1200,0,152),
-					new THREE.Vector3(1200,200,152),
+					new THREE.Vector3(1200,170,152),
 					new THREE.Vector3(126,915,152),
 					new THREE.Vector3(620,170,152),
 					new THREE.Vector3(870,170,152)];
+		//Translations
+		vertices[0].x += -trans;
+		vertices[0].y += -trans;
+		vertices[1].y += -trans;
+		//vertices[4].y += 2*trans;
+		vertices[5].y += -trans;
+		vertices[3].x += -trans;
+		vertices[3].y += trans;
+		vertices[9].x += trans;
+		//vertices[7].x += trans;
+		vertices[7].y += 2*trans;
+
 		troisieme_etage.vertices = vertices;
 		troisieme_etage.faces.push(new THREE.Face3(0, 1, 2),new THREE.Face3(0,2,3),
 							       new THREE.Face3(0, 2, 1),new THREE.Face3(0,3,2),
