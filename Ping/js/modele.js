@@ -59,7 +59,7 @@ salle_groups.prototype = {
 var camera, splineCamera, scene, renderer, container;
 var controls;
 var animCamEnabled =false;
-var tube;
+var tube, tubeMesh;
 var binormal = new THREE.Vector3();
 var normal = new THREE.Vector3();
 
@@ -316,6 +316,7 @@ function draw_path(path)
 	geometry.computeLineDistances();
 	var line = new THREE.Line( geometry, material, THREE.LinePieces );
 	scene.add( line );*/
+	scene.remove(tubeMesh);
 	var geometry = new THREE.Geometry();
 	var vertices = [];
 	for(var i=0; i<path.length; i++)
@@ -330,7 +331,7 @@ function draw_path(path)
 }
 
 function addGeometry( geometry, color ) {
-	// 3d shape
+	// 3d shape 
 	tubeMesh = THREE.SceneUtils.createMultiMaterialObject( geometry, [
 				new THREE.MeshLambertMaterial({
 					color: color,
