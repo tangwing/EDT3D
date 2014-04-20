@@ -1,4 +1,5 @@
 var date;
+var salle_changed;
 
 $(function() {
     
@@ -9,6 +10,8 @@ $(function() {
 		changeYear: true,
 		dateFormat: "dd-mm-yy",
 		onClose: function(dateText) {
+					clear_salle();
+					scene.remove(tubeMesh);
 					if(dateText != date){
 						if(file != null){
 							getEventList(reader,file,yyyymmdd(dateText));
@@ -18,4 +21,63 @@ $(function() {
 				}
     });
 	
+	window.top.$("#refresh_classroom").click(function(){
+		clear_salle_find();
+		salle_changed = window.top.$("#classroom").find("option:selected").text();
+		change_salle_stats(salle_changed,"finded");
+	});
+	
+	window.top.$("#clear_classroom").click(function(){
+		clear_salle_find();
+	});
+	
+	window.top.$("#refresh_path").click(function(){
+		
+		var start = window.top.$("#path_start").find("option:selected").text();
+		var end = window.top.$("#path_end").find("option:selected").text();
+		
+		var indexStart = search_point_by_name(start);
+		var indexEnd = search_point_by_name(end);
+		
+		if(indexStart != -1 && indexEnd != -1)
+		{		
+			var graph = getRoomGraph();
+			var path = graph.dijkstra(indexStart,indexEnd); //从oc到turing怎么走？！
+			log(path.toString());
+			draw_path(path);
+		}
+
+	});
+	
+	initialSelectControl();
 });
+
+function clear_salle_find(){
+	if(salle_changed != null){
+		for(var i=0; i<eventList.length ; i++){
+			if(salle_changed == eventList.LOCATION){
+				change_salle_stats(salle_changed, class_status[i]);
+				break;
+			}
+		}
+		if(i == eventList.length)
+			change_salle_stats(salle_changed, "blank");
+		salle_changed = null;
+	}
+}
+
+function clear_salle(){
+	eventList.forEach(function(value){
+		change_salle_stats(value.LOCATION, "blank");
+	});
+}
+
+function initialSelectControl(){
+	salles.forEach(function(value){
+		if(value.name != ""){
+			window.top.$("#path_start").append("<option value="+value.name+">"+value.name+"</option>"); 
+			window.top.$("#path_end").append("<option value="+value.name+">"+value.name+"</option>"); 
+			window.top.$("#classroom").append("<option value="+value.name+">"+value.name+"</option>"); 
+		}
+	});
+}

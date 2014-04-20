@@ -34,19 +34,29 @@
 							Course file input :
 							<input id="fileInput" type="file" data-classInput="input-small" data-icon="false" style="height:10">
 						</label>
+						<label class="tree-toggle nav-header">Date : &nbsp <input type="text" id="datepicker" disabled="disabled"/>
+						</label>
 					</li>
                     <li class="divider"></li>
-                    <li><label class="tree-toggle nav-header">Date : &nbsp <input type="text" id="datepicker" disabled="disabled"/>
+                    <li>
+						<label class="tree-toggle nav-header">
+							Find classroom :
+							<select class="form-control" id="classroom">
+								<option></option>
+							</select>
+							<button id="refresh_classroom" type="submit" class="btn btn-default">Refresh</button>
+							<button id="clear_classroom" type="submit" class="btn btn-default">Clear</button>
 						</label>
 						<label class="tree-toggle nav-header">Path : &nbsp 
-							<select class="form-control" id="path_start" disabled="disabled">
+							<select class="form-control" id="path_start">
 								<option></option>
 								<option>Entrance</option>
 							</select>
-							<select class="form-control" id="path_end" disabled="disabled">
+							<select class="form-control" id="path_end">
 								<option></option>
 								<option>Entrance</option>
 							</select>
+							<button id="refresh_path" type="submit" class="btn btn-default">Refresh</button>
 						</label>
                     </li>
                 </ul>

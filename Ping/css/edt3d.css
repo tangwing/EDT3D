@@ -17,6 +17,16 @@
 	width: 140px;
 }
 
+#refresh_path{
+	float: right;
+	margin-right: 10px;
+}
+
+#clear_classroom{
+	float: right;
+	margin-right: 10px;
+}
+
 .page-header{
 	padding-bottom:5px; margin-bottom:20px;
 }
@@ -40,4 +50,3 @@
 	height: 22px;
 	width: 140px;
 }
-

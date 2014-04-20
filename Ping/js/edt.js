@@ -8,6 +8,7 @@ window.onload = function()
 	//var fileContent = document.getElementById('parseResult');
 	fileInput.addEventListener('change', function(e){
 		eventList = [];
+		class_status = [];
 		file = fileInput.files[0];
 		if(true)
 		{	
@@ -21,17 +22,11 @@ window.onload = function()
 			reader.readAsText(file);
 			
 			window.top.$("#datepicker").removeAttr("disabled"); 
-			window.top.$("#path_start").removeAttr("disabled"); 
-			window.top.$("#path_end").removeAttr("disabled"); 
-			
-			initialPathControl();
 			
 		}else{
 			fileContent.innerText = "File type not supported!"
 			
 			window.top.$("#datepicker").attr("disabled","disabled"); 
-			window.top.$("#path_start").attr("disabled","disabled"); 
-			window.top.$("#path_end").attr("disabled","disabled"); 
 		}
 		//Not testing file type
 	});
@@ -42,12 +37,13 @@ function getEventList(reader, file, date)
 	var regEvent = new RegExp("BEGIN:VEVENT[\\s\\S]{1,40}DTSTART:"+date+"[\\s\\S]{1,500}END:VEVENT", "g");
 					
 	//fileContent.innerText = reader.result.match(regEvent);
-						
+					
 	var regTmp = new RegExp("(,?\"[A-Z-]*):","g");
 	var result = reader.result.match(regEvent);
 	if(result != null)
 	{
 		eventList = []; 
+		class_status = [];
 		result.forEach(function(e){
 			var json = "{"+
 							e.replace(/BEGIN:VEVENT\r?\n/g,"\"") //remove the beginning
@@ -111,20 +107,11 @@ function changeClassStatus(startTime, endTime){
 	});
 }
 
-function initialPathControl(){
-	salles.forEach(function(value){
-		if(value.name != ""){
-			window.top.$("#path_start").append("<option value="+value.name+">"+value.name+"</option>"); 
-			window.top.$("#path_end").append("<option value="+value.name+">"+value.name+"</option>"); 
-		}
-	});
-}
-
 function setPathControl(){
 
 	var start, end;
 	
-	var index = class_status.indexOf("Finished");
+	var index = class_status.lastIndexOf("Finished");
 	if( index != -1 ) 
 		start = eventList[index].LOCATION;
 	if(start == null || start == "")
@@ -151,13 +138,24 @@ function setPathControl(){
 		
 		if(indexStart != -1 && indexEnd != -1)
 		{
-			window.top.$("#path_start").val(start);
-			window.top.$("#path_end").val(end); 			
+			setSelected("path_start",start);	
+			setSelected("path_end",end);
+			//window.top.$("#path_start option[text='"+start+"']").attr("selected",true);
+			//window.top.$("#path_end option[text='"+end+"']").attr("selected",true);			
 			var graph = getRoomGraph();
 			var path = graph.dijkstra(indexStart,indexEnd); //从oc到turing怎么走？！
 			log(path.toString());
-			draw_path(path)
+			draw_path(path);
 		}
 	}
-	
+}
+
+function setSelected(id,name){
+	var options = window.top.$("#"+id+" option");
+	for(var i=0; i<options.length; i++){
+		if(options[i].text == name){
+			window.top.$("#"+id).get(0).selectedIndex=i;
+			break;
+		}
+	}
 }

@@ -4,6 +4,7 @@ var salle_color = {
 	class:0x0000FF,
 	NotStarted:0x86B404,
 	Finished:0xD8F781,
+	finded: 0xFF00,
 };
 var salle_form = {
 	Square : "Square",
@@ -353,8 +354,12 @@ function change_salle_stats(name,stats)
 		var group = groups.getGroupByName(name);
 	
 		group.children.forEach(function(value){
-			var color = salle_color[stats];
-			value.material.color.setHex(color);
+			if(stats == "blank" && value.geometry.vertices.length == 2 )
+				value.material.color.setHex(0x000000);
+			else{
+				var color = salle_color[stats];
+				value.material.color.setHex(color);
+			}
 		});
 	}
 }
