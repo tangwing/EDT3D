@@ -191,14 +191,7 @@ Graph.prototype.dijkstra = function(src, dest) //Defined for each object
 	return path;
 }
 
-/////////////////////// Date conversion /////////////////////
-// from dd-mm-yyyy to yyyymmdd
-function yyyymmdd(date){
-	var dd = date.substr(0,2);
-	var mm = date.substr(3,2);
-	var yyyy = date.substr(6,4);
-	return yyyy+mm+dd;
-}
+
 
 /////////////////////// Date conversion /////////////////////
 Date.prototype.yyyymmdd = function() {
@@ -210,13 +203,13 @@ Date.prototype.yyyymmdd = function() {
 
 Date.prototype.fromStampICS = function(str)
 {
-	if(str.length<13)throw "Date string illegal!";
-	this.setUTCFullYear(str.substr(0,4));
-	this.setUTCMonth(str.substr(4,2)-1);
-	this.setUTCDate(str.substr(6,2));
-	this.setUTCHours(str.substr(9,2));
-	this.setUTCMinutes(str.substr(11,2));
-	return this;
+	if(str.length<13)throw "Date string illegal!"
+	this.setFullYear(str.substr(0,4))
+	this.setMonth(str.substr(4,2)-1)
+	this.setDate(str.substr(6,2))
+	this.setHours(str.substr(9,2))
+	this.setMinutes(str.substr(11,2))
+	return this
 }
 
 /////////////////////// No need to go down /////////////////////////

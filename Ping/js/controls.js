@@ -2,7 +2,6 @@ var date;
 var salle_changed;
 
 $(function() {
-    
 	window.top.$("#fileInput").filestyle({classInput: "input-small", icon: false, buttonText: "file"});
 	
 	window.top.$("#datepicker").datepicker({
@@ -42,14 +41,14 @@ $(function() {
 		if(indexStart != -1 && indexEnd != -1)
 		{		
 			var graph = getRoomGraph();
-			var path = graph.dijkstra(indexStart,indexEnd); //从oc到turing怎么走？！
+			var path = graph.dijkstra(indexStart,indexEnd); 
 			log(path.toString());
 			draw_path(path);
 		}
 
 	});
 	
-	initialSelectControl();
+	initSelectControl();
 });
 
 function clear_salle_find(){
@@ -72,7 +71,7 @@ function clear_salle(){
 	});
 }
 
-function initialSelectControl(){
+function initSelectControl(){
 	salles.forEach(function(value){
 		if(value.name != ""){
 			window.top.$("#path_start").append("<option value="+value.name+">"+value.name+"</option>"); 

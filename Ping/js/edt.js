@@ -1,16 +1,16 @@
 var eventList = []; //global
-var class_status = [];
+var class_status = []; //Class, Finished, NotStarted
 var file;
 var reader;
 window.onload = function()
-{
+{//Deal with file change event
 	var fileInput=window.top.document.getElementById('fileInput');
 	//var fileContent = document.getElementById('parseResult');
 	fileInput.addEventListener('change', function(e){
 		eventList = [];
 		class_status = [];
 		file = fileInput.files[0];
-		if(true)
+		if(true)	//always
 		{	
 			reader = new FileReader();
 			reader.onload = function(){
@@ -25,19 +25,18 @@ window.onload = function()
 			
 		}else{
 			fileContent.innerText = "File type not supported!"
-			
 			window.top.$("#datepicker").attr("disabled","disabled"); 
 		}
-		//Not testing file type
 	});
 }
 
+///
+/// Analyse the ics file and reture the eventlist of the specified date
+///
 function getEventList(reader, file, date)
 {
 	var regEvent = new RegExp("BEGIN:VEVENT[\\s\\S]{1,40}DTSTART:"+date+"[\\s\\S]{1,500}END:VEVENT", "g");
-					
 	//fileContent.innerText = reader.result.match(regEvent);
-					
 	var regTmp = new RegExp("(,?\"[A-Z-]*):","g");
 	var result = reader.result.match(regEvent);
 	if(result != null)
@@ -59,34 +58,48 @@ function getEventList(reader, file, date)
 			eventList.push(cours);
 		});
 						
+		eventList.sort(function(a,b){
+			return a.TBEGIN.getHours() - b.TBEGIN.getHours();
+		});
 		//Now we get all event of today in the list
 		log(eventList.length);
 		//Now we have eventList, attaching it to rooms
 		eventList.forEach(function(v, ind){
 			class_status.push(getClassStatus(v.TBEGIN, v.TEND));
 			log("Cours "+ind +":");
-			log(v.TBEGIN.getHours()+1 +":"+v.TBEGIN.getMinutes()+ " -> " + (v.TEND.getHours()-1)+":"+v.TEND.getMinutes());
-			log(v.TBEGIN);
+			log(v.TBEGIN.getHours()+":"+v.TBEGIN.getMinutes()+ " -> " + (v.TEND.getHours())+":"+v.TEND.getMinutes());
+			//log(v.TBEGIN);
 			log(v.SUMMARY);
 			log(v.LOCATION);
 		});
-				
-		if(class_status.indexOf("class") == -1)
-		{
-			var index = class_status.indexOf("NotStarted");
-			if(index != -1)
-				class_status[index] = "class";
-		}
+
+		//If no class under way
+		// if(class_status.indexOf("Class") == -1)
+		// {
+		// 	var index = class_status.indexOf("NotStarted");
+		// 	if(index != -1)
+		// 		class_status[index] = "Class"; //?Case insensitive?
+		// }
 			
-		eventList.forEach(function(value,index){
-			change_salle_stats(value.LOCATION, class_status[index]);
+		//Update room colors
+		eventList.forEach(function(v,index){
+			log($.trim(v.LOCATION) == "")
+			log($.trim(v.LOCATION) === "")
+			if($.trim(v.LOCATION) === ""){ //Show in text
+				var info = window.top.$("#classinfo").text() + 
+					v.TBEGIN.getHours()+":"+v.TBEGIN.getMinutes()+ " -> " + 
+					(v.TEND.getHours())+":"+v.TEND.getMinutes() + "\n" + v.SUMMARY + "\n" +v.LOCATION +
+					"\n\n=======\n\n";
+				window.top.$("#classinfo").text(info);
+			}else	change_salle_stats(v.LOCATION, class_status[index]); //?
 		});
-		
+
+		//Show shortest path
 		setPathControl();
 	}
-		
 }
 
+/// Get the realtime status of a class event
 function getClassStatus(startTime, endTime){
 	var now = new Date();
 	if(now.getHours()< startTime.getHours() || ( now.getHours() == startTime.getHours() && now.getMinutes()< startTime.getMinutes())){
@@ -100,37 +113,31 @@ function getClassStatus(startTime, endTime){
 	}
 }
 
+/// Get class status according to current time
 function changeClassStatus(startTime, endTime){
 	var now = new Date();
-	eventList.forEach(function(value,index){
+	eventList.forEach(function(value, index){
 		class_status[index] = getClassStatus(value.TBEGIN, value.TEND);
 	});
 }
 
+/// Draw path to the next classroom
 function setPathControl(){
+	var start, end, index;
+	index = class_status.lastIndexOf("Class");
+	if( index != -1 ) 
+		start = eventList[index].LOCATION;					//Start from the current room
+	else {
+		index = class_status.lastIndexOf("Finished");
+		if(index != -1) start = eventList[index].LOCATION;  //Start from last room
+		else start = "Entrance";							//Start from entrance
+	}
 
-	var start, end;
-	
-	var index = class_status.lastIndexOf("Finished");
+	index = class_status.indexOf("NotStarted");
 	if( index != -1 ) 
-		start = eventList[index].LOCATION;
-	if(start == null || start == "")
-		start = "Entrance";
-		
-	index = class_status.indexOf("Class");
-	if( index != -1 ) 
-		end = eventList[index].LOCATION;
-	if(end == null || end == "")
-	{
-		index = class_status.indexOf("NotStarted");
-		if( index != -1 ) 
-			end = eventList[index].LOCATION;
-	}
+		end = eventList[index].LOCATION;				//To next room
+	else	end = "Entrance";							//No more classes !!!
 	
-	if(end == null || end == "")
-	{
-		end = "Entrance";
-	}
 	
 	if( start != "Entrance" || end != "Entrance"){
 		var indexStart = search_point_by_name(start);
@@ -143,13 +150,14 @@ function setPathControl(){
 			//window.top.$("#path_start option[text='"+start+"']").attr("selected",true);
 			//window.top.$("#path_end option[text='"+end+"']").attr("selected",true);			
 			var graph = getRoomGraph();
-			var path = graph.dijkstra(indexStart,indexEnd); //从oc到turing怎么走？！
+			var path = graph.dijkstra(indexStart,indexEnd); 
 			log(path.toString());
 			draw_path(path);
 		}
 	}
 }
 
+//Update select list
 function setSelected(id,name){
 	var options = window.top.$("#"+id+" option");
 	for(var i=0; i<options.length; i++){

@@ -1,10 +1,10 @@
 /*-------Structure----------*/
 var salle_color = {
-	blank:0xFFFFFF,
-	class:0x0000FF,
+	Blank:0xFFFFFF,
+	Class:0x0000FF,
 	NotStarted:0x86B404,
 	Finished:0xD8F781,
-	finded: 0xFF00,
+	Finded: 0xFF00,
 };
 var salle_form = {
 	Square : "Square",
@@ -57,7 +57,7 @@ salle_groups.prototype = {
 					},
 };
 /*------------variable--------------*/
-var camera, splineCamera, scene, renderer, container;
+var camera, splineCamera, scene, renderer, container, pointLight;
 var controls;
 var animCamEnabled =false;
 var tube, tubeMesh;
@@ -233,15 +233,20 @@ function init() {
 	// CAMERA
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	splineCamera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-	
 	camera.position.set( 0, 0, 1000 );
-	
+
+
 	// CONTROLS
 	controls = new THREE.TrackballControls ( camera );
 	//controls = new THREE.OrbitControls( camera );
 	
 	// SCENE
 	scene = new THREE.Scene();
+
+	//Light
+	pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
+	pointLight.position.set( 50, 50, 50 );
+	//scene.add( pointLight );
 
 	// RENDERER
 	renderer = new THREE.WebGLRenderer( { antialias: true } ); // WebGLRenderer CanvasRenderer
@@ -256,16 +261,16 @@ function init() {
 	window.addEventListener( 'resize', onWindowResize, false );
 	
 	salles.forEach(function(value, index, ar){
-		draw_salle(value,"blank");
+		draw_salle(value,"Blank");
 	});
 	
 	/*
 	points.forEach(function(value, index, ar){
-		draw_salle(new salle('','','',value.position,new salle_size(1,1,1),salle_form.Square,salle_direction.Horizontal),"blank");
+		draw_salle(new salle('','','',value.position,new salle_size(1,1,1),salle_form.Square,salle_direction.Horizontal),"Blank");
 	});*/
 
-	change_salle_stats("Pascal","class");
-	change_salle_stats("TP Systèmes","class");
+	change_salle_stats("Pascal","Class");
+	change_salle_stats("TP Systèmes","Class");
 	//draw_etage(1);
 	draw_etage(2);
 	//draw_etage(3);
@@ -280,8 +285,8 @@ function init() {
 	//camera.position.x+=500;
 	//camera.lookAt(new THREE.Vector3(500,0,0));
 	//camera.lookAt(new THREE.Vector3(500,0,0));
-//scene.add(camera);
-//scene.position.x -= 500;
+	//scene.add(camera);
+	//scene.position.x -= 500;
 	scene.children.forEach(function(obj){
 		//var axe = obj.worldToLocal(new THREE.Vector3(-1,0,0));
 		obj.position.x-=450;
@@ -354,7 +359,7 @@ function change_salle_stats(name,stats)
 		var group = groups.getGroupByName(name);
 	
 		group.children.forEach(function(value){
-			if(stats == "blank" && value.geometry.vertices.length == 2 )
+			if(stats == "Blank" && value.geometry.vertices.length == 2 )
 				value.material.color.setHex(0x000000);
 			else{
 				var color = salle_color[stats];
@@ -380,7 +385,13 @@ function draw_salle(salle,stats)
 		//geometry.position.x = 100;
 		//geometry.position.y = position[1];
 		//geometry.position.z = position[2];
-		var material = new THREE.MeshBasicMaterial( { color: salle_color[stats], transparent: true, opacity: 0.7 } );//alert(2);
+		var material = new THREE.MeshBasicMaterial( 
+		{ 
+			color: salle_color[stats], 
+			transparent: true, 
+			opacity: 0.7 ,
+			//map: THREE.ImageUtils.loadTexture('img/wall.jpg')
+		} );//alert(2);
 
 		
 		var cube = new THREE.Mesh( geometry, material );

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "name": "One-click Kittens",
+  "description": "This extension demonstrates a browser action with kittens.",
+  "version": "1.0",
+
+  "permissions": [
+    "http://ade.univ-tours.fr/",
+	"tabs"
+  ],
+  "browser_action": {
+    "default_icon": "icon.png"    
+  },
+  "background": {
+	"page": "test.html"
+    }
+}
+//"scripts": ["bg.js", "js/edt3d.js", "js/jquery-1.11.0.js", "EDT.html"]

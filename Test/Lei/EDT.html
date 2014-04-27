@@ -1,0 +1,247 @@
+<html>
+<head>
+	<title>Polytech EDT3D</title>
+	<style>canvas { width: 100%; height: 100% }</style>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	<script type="text/javascript" src="./js/jquery-1.11.0.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script src="./js/three.js"></script>
+	<script type="text/javascript" src="./js/edt3d.js"></script>
+</head>
+<body>
+	<div class="container">
+		<form role="form">
+			<div class="form-group">
+				<label for="fileInput">File input</label>
+				<input type="file" id="fileInput">
+			</div>
+			<textarea class="form-control" id="parseResult" rows="30"></textarea>
+		</form>
+
+		<div class="row">
+			<div ></div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var eventList = []; //global
+
+		window.onload = function()
+		{
+			testAnything()
+			var fileInput=document.getElementById('fileInput');
+			var fileContent = document.getElementById('parseResult');
+			fileInput.addEventListener('change', function(e){
+				eventList = []
+				var file = fileInput.files[0];
+				//Not testing file type
+				if(true)
+				{
+					var reader = new FileReader();
+					reader.onload=function(){
+						var regEvent = new RegExp("BEGIN:VEVENT[\\s\\S]{1,40}DTSTART:"+new Date().yyyymmdd()+"[\\s\\S]{1,500}END:VEVENT", "g");
+						
+						fileContent.innerText = reader.result.match(regEvent);
+						
+						var regTmp = new RegExp("(,?\"[A-Z-]*):","g");
+						reader.result.match(regEvent).forEach(function(e){
+							var json = "{"+
+								e.replace(/BEGIN:VEVENT\r?\n/g,"\"") //remove the beginning
+								 .replace(/\r?\nEND:VEVENT/g,"\"")	 //remove the end
+								 .replace(/\r?\n([^A-Z])/g, "$1")	 //remove illegal new line
+								 .replace(/\r?\n/g,"\",\"")			 //new line to ,
+								 .replace(regTmp, "$1\":\"")		 //: to ":"
+								 +"}";
+							log(json);
+							var cours = JSON.parse(json);
+							cours.TBEGIN = new Date().fromStampICS(cours.DTSTART)
+							cours.TEND = new Date().fromStampICS(cours.DTEND)
+							eventList.push(cours);
+						});
+						
+						//Now we get all event of today in the list
+						log(eventList.length)
+						//Now we have eventList, attaching it to rooms
+						eventList.forEach(function(v, ind){
+							log("Cours "+ind +":")
+							log(v.TBEGIN.getHours()-1 +":"+v.TBEGIN.getMinutes()+ " -> " + (v.TEND.getHours()-1)+":"+v.TEND.getMinutes())
+							log(v.TBEGIN)
+							log(v.SUMMARY)
+							log(v.LOCATION)
+						})
+					};
+					reader.readAsText(file);
+				}else fileContent.innerText = "File type not supported!"
+
+				
+			});
+		}
+	</script>
+
+
+<script>
+var calurl = "http://ade.univ-tours.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?data=8241fc38732002144f7500da3c723b46e0fa50826f0818af2370d544632bbb83906f45af276f59aec18424f8595af9f973866adc6bb17503";
+
+var fileContent = document.getElementById('parseResult');
+getTxt = function (){
+	  $.ajax({
+	  url:calurl,
+	  success: function (data){
+	  alert(data)
+	  //parse ur data
+	  //you can split into lines using data.split('\n') 
+	  //use regex functions to effectivley parse
+	  fileContent.innerText = data;
+  	}
+  });
+}
+</script>
+<button type="button" id="btnGetTxt" onclick="getTxt()">Get Text</button>
+
+<!-- <iframe id="frmFile" src="http://ade.univ-tours.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?data=8241fc38732002144f7500da3c723b46e0fa50826f0818af2370d544632bbb83906f45af276f59aec18424f8595af9f973866adc6bb17503" onload="LoadFile();" style="display: none;"></iframe> -->
+
+<script type="text/javascript">function LoadFile() {
+    var oFrame = document.getElementById("frmFile");
+    var strRawContents = oFrame.contentWindow.document.body.childNodes[0].innerHTML;
+    while (strRawContents.indexOf("\r") >= 0)
+        strRawContents = strRawContents.replace("\r", "");
+    var arrLines = strRawContents.split("\n");
+    alert("File " + oFrame.src + " has " + arrLines.length + " lines");
+    for (var i = 0; i < arrLines.length; i++) {
+        var curLine = arrLines[i];
+        alert("Line #" + (i + 1) + " is: '" + curLine + "'");
+    }
+}
+
+$.ajax({
+	async:false,
+	crossDomain:true,
+	url:calurl,
+	method:"GET",
+	succss:function (data){
+		alert(data);
+	},
+	error:function (xhr, status, error){
+		alert("Erreur de chargement du fichier '"+calurl+"' : "+xhr.responseText+" ("+status+" - "+error+")");
+	},
+	dataType:'text'
+});
+
+
+
+
+
+
+
+
+
+
+// Create XHR, Blob and FileReader objects
+//     var xhr = new XMLHttpRequest(),
+//         blob,
+//         fileReader = new FileReader();
+ 
+//     xhr.open("GET", calurl, true);
+//     // Set the responseType to arraybuffer. "blob" is an option too, rendering manual Blob creation unnecessary, but the support for "blob" is not widespread enough yet
+//     xhr.responseType = "arraybuffer";
+// xhr.onreadystatechange = handleStateChange; 
+
+    //xhr.addEventListener("load", 
+    // 	var handleStateChange=function () {
+    //     if (xhr.status === 200) {
+
+    //     	alert(xhr.responseText);
+
+    //         // Create a blob from the response
+    //         blob = new Blob([xhr.response], {type: "image/png"});
+ 
+    //         // onload needed since Google Chrome doesn't support addEventListener for FileReader
+    //         fileReader.onload = function (evt) {
+    //             // Read out file contents as a Data URL
+    //             var result = evt.target.result;
+    //             // Set image src to Data URL
+    //             rhino.setAttribute("src", result);
+    //             // Store Data URL in localStorage
+    //             try {
+    //                 localStorage.setItem("rhino", result);
+    //             }
+    //             catch (e) {
+    //                 console.log("Storage failed: " + e);
+    //             }
+    //         };
+    //         // Load blob as Data URL
+    //         fileReader.readAsDataURL(blob);
+    //     }
+    // };//, false);
+    // Send XHR
+    //xhr.send();
+
+
+
+// function createCORSRequest(method, url) {
+// 	  var xhr = new XMLHttpRequest();
+// 	  if ("withCredentials" in xhr) {
+
+// 	    // Check if the XMLHttpRequest object has a "withCredentials" property.
+// 	    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+// 	    xhr.open(method, url, true);
+
+// 	  } else if (typeof XDomainRequest != "undefined") {
+
+// 	    // Otherwise, check if XDomainRequest.
+// 	    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+// 	    xhr = new XDomainRequest();
+// 	    xhr.open(method, url);
+
+// 	  } else {
+// 	    // Otherwise, CORS is not supported by the browser.
+// 	    xhr = null;
+// 	  }
+// 	  return xhr;
+// }
+
+// var xhr = createCORSRequest('GET', calurl);
+// if (!xhr) {
+//   throw new Error('CORS not supported');
+// }
+// xhr.onload = function() {
+//  var responseText = xhr.responseText;
+//  alert(responseText);
+//  // process the response.
+// };
+
+// xhr.onreadystatechange = function (evt) {
+//     		alert("readyState"+xhr.readyState)
+//     		if(xhr.readyState == 4)
+//     		{alert("status"+xhr.status)
+// 		        if (xhr.status === 200) {
+
+// 		        	alert(xhr.responseText);
+
+// 		            // Create a blob from the response
+// 		            blob = new Blob([xhr.response], {type: "image/png"});
+		 
+// 		            // onload needed since Google Chrome doesn't support addEventListener for FileReader
+// 		            fileReader.onload = function (evt) {
+// 		                // Read out file contents as a Data URL
+// 		                var result = evt.target.result;
+// 		                // Set image src to Data URL
+// 		                rhino.setAttribute("src", result);
+// 		                // Store Data URL in localStorage
+// 		                try {
+// 		                    localStorage.setItem("rhino", result);
+// 		                }
+// 		                catch (e) {
+// 		                    console.log("Storage failed: " + e);
+// 		                }
+// 		            };
+// 		            // Load blob as Data URL
+// 		            fileReader.readAsDataURL(blob);
+// 		        }
+// 		    }
+//     };
+// xhr.send()
+
+</script>
+</body>
+</html>
