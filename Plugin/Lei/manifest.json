@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
-  "name": "One-click Kittens",
-  "description": "This extension demonstrates a browser action with kittens.",
-  "version": "1.0",
+  "name": "EDT3D",
+  "description": "Emploi du temps 3D, Polytech'Tours. XIANG Ping & SHANG Lei",
+  "version": "2.0",
 
   "permissions": [
     "http://ade.univ-tours.fr/",
@@ -13,7 +13,7 @@
     "default_icon": "icon.png"    
   },
   "background": {
-	"page": "test.html"
-    }
+	"page": "index.html"
+  }
 }
 //"scripts": ["bg.js", "js/edt3d.js", "js/jquery-1.11.0.js", "EDT.html"]

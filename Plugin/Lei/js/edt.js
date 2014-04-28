@@ -42,8 +42,7 @@ window.onload = function()
 			///TODO get cal from url
 			$.ajax({
 			  url:calurl,
-			  success: function (data){
-			  	alert(data)
+			  success: function (data){alert(data)
 
 			  	if(date == null)
 					getEventList(this, data,new Date().yyyymmdd());
