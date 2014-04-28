@@ -21,7 +21,10 @@
 }
 
 #refresh_path{
-	float: right;
+	margin-right: 10px;
+}
+#anim_path{
+	float:right;
 	margin-right: 10px;
 }
 

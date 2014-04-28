@@ -65,6 +65,8 @@ var tube, tubeMesh; 				//Path view
 var binormal = new THREE.Vector3();
 var normal = new THREE.Vector3();
 var upnormal = new THREE.Vector3(0,0,1);
+//TextGeometry
+
 
 var lines=[];
 var v2=50; //le décalage vers la droite pour la 2ème partie de la partie Verticale.
@@ -196,7 +198,7 @@ var points = {	0: {pos:new THREE.Vector3( 140,120,-30), direction:  salle_direct
 				70: {pos: new THREE.Vector3(90,720,-30), direction:  salle_direction.Oblique},
 				71: {pos: new THREE.Vector3(110,620,-30), direction:  salle_direction.Oblique},
 				72: {pos: new THREE.Vector3(265,545,-30), direction:  salle_direction.Oblique},
-				73: {pos: new THREE.Vector3(270,190,-30), direction:  salle_direction.Horizontal},
+				73: {pos: new THREE.Vector3(170,190,-30), direction:  salle_direction.Horizontal},
 				74: {pos: new THREE.Vector3(830,210,-30), direction:  salle_direction.Oblique},
 				75: {pos: new THREE.Vector3(230,120,-30), direction:  salle_direction.Vertical},
 				76: {pos: new THREE.Vector3(190,35,20), direction:  salle_direction.Vertical},
@@ -398,7 +400,8 @@ function change_salle_stats(name,stats){
 		});
 	}
 }
-	
+
+
 function draw_salle(salle,stats)
 {
 	var size = salle.size;
@@ -416,7 +419,42 @@ function draw_salle(salle,stats)
 	} );
 	var line_material = new THREE.LineBasicMaterial({color: 0x000000});
 	var line_positions; //Borders
+//Variables for text geo	
+var text = salle.name,
+	height = 1,
+	tsize = 10,
+	curveSegments = 4,
+	bevelThickness = 2,
+	bevelSize = 1.5,
+	bevelSegments = 3,
+	bevelEnabled = false,
+	font = "optimer", // helvetiker, optimer, gentilis, droid sans, droid serif
+	weight = "normal", // normal bold
+	style = "normal"; // normal italic
+	if(text != "") //if have text
+	{
+		var textMaterial = new THREE.MeshFaceMaterial( [ 
+					new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading } ), // front
+					new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.SmoothShading } ) // side
+				] );
+		//Draw text
+		var textGeo = new THREE.TextGeometry( text, {
+					 size: tsize,
+					 height: height,
+					curveSegments: curveSegments,
+					font: font,
+					weight: weight,
+					style: style,
+					bevelThickness: bevelThickness,
+					bevelSize: bevelSize,
+					bevelEnabled: bevelEnabled,
+					material: 0,
+					extrudeMaterial: 1
+				});
 
+		textGeo.computeBoundingBox();
+		textGeo.computeVertexNormals();
+	}
 	if(form == salle_form.Square)
 	{
 		var geometry = new THREE.CubeGeometry( size.length, size.width, size.height );
@@ -427,7 +465,19 @@ function draw_salle(salle,stats)
 		cube.position.z = position.z;
 		cube.matrixAutoUpdate = false;
 		cube.updateMatrix();
+		
+		if(text != "") {
+			var textMesh = new THREE.Mesh( textGeo, textMaterial );
+			textMesh.position.x += size.length/4;
+			textMesh.position.y += size.width/2;
+			textMesh.position.z -= size.height/4;
+			textMesh.rotation.x = -Math.PI/2;
+			textMesh.rotation.z = Math.PI;
+			cube.add(textMesh);
+		}
 		salleObj.add( cube );
+
+		//Border
 		line_positions = [ new THREE.Vector3(position.x+size.length/2, position.y+size.width/2,position.z+size.height/2),
 							   new THREE.Vector3(position.x+size.length/2, position.y+size.width/2,position.z-size.height/2),
 							   new THREE.Vector3(position.x+size.length/2, position.y-size.width/2,position.z+size.height/2),
@@ -471,6 +521,15 @@ function draw_salle(salle,stats)
 
     	geometry.computeBoundingSphere();
 		var mesh = new THREE.Mesh(geometry, material);
+		// if(text != "") {
+		// 	var textMesh = new THREE.Mesh( textGeo, textMaterial );
+		// 	// textMesh.position.x += size.length/4;
+		// 	// textMesh.position.y += size.width/2;
+		// 	// textMesh.position.z -= size.height/4;
+		// 	// textMesh.rotation.x = -Math.PI/2;
+		// 	// textMesh.rotation.z = Math.PI;
+		// 	mesh.add(textMesh);
+		// }
     	salleObj.add(mesh);
     	line_positions = vertices;
 	}
@@ -674,6 +733,7 @@ function draw_etage(couche){
 		texture.wrapT = THREE.RepeatWrapping;
 		var material = new THREE.MeshBasicMaterial({ 
 			//map: texture
+			color: 0x785E9E
 		});
 		var mesh = new THREE.Mesh(stair, material);
 		scene.add(mesh);
@@ -718,9 +778,6 @@ function draw_etage(couche){
 		texture = THREE.ImageUtils.loadTexture('img/test.jpg');
 		texture.wrapS = THREE.RepeatWrapping;
 		texture.wrapT = THREE.RepeatWrapping;
-		material = new THREE.MeshBasicMaterial({ 
-			//map: texture
-		});
 		mesh = new THREE.Mesh(stair, material);
 		scene.add(mesh);
 	}
@@ -758,45 +815,45 @@ function render() {
 			//var t = ( (time) % looptime ) / looptime;
 			//log(tube.path.points)
 			t += 0.01/tube.path.points.length;
-			if(t>=1) {
+			if(t>=0.98) {
 				animCamEnabled = false; t=0;
-				return;
+			}else{
+				var pos = tube.path.getPointAt( t );
+				pos.multiplyScalar( scale );
+
+				// interpolation
+				var segments = tube.tangents.length;
+				var pickt = t * segments;
+				var pick = Math.floor( pickt );
+				var pickNext = ( pick + 1 ) % segments;
+
+				binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
+				binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
+
+				var dir = tube.path.getTangentAt( t );
+				var offset = 15;
+				normal.copy( binormal ).cross( dir );
+
+				// We move on a offset on its binormal
+				pos.add( normal.clone().multiplyScalar( offset ) );
+				splineCamera.position = pos;
+				//cameraEye.position = pos;
+
+
+				// Camera Orientation 1 - default look at
+				//splineCamera.lookAt( lookAt );
+
+				// Using arclength for stablization in look ahead.
+				var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 ).multiplyScalar( scale );
+
+				// Camera Orientation 2 - up orientation via normal
+				splineCamera.matrix.lookAt(splineCamera.position, lookAt, upnormal);
+				splineCamera.rotation.setFromRotationMatrix( splineCamera.matrix, splineCamera.rotation.order );
+
+				//cameraHelper.update();
+				//parent.rotation.y += ( targetRotation - parent.rotation.y ) * 0.05;
+				renderer.render( scene, splineCamera);
 			}
-			var pos = tube.path.getPointAt( t );
-			pos.multiplyScalar( scale );
-
-			// interpolation
-			var segments = tube.tangents.length;
-			var pickt = t * segments;
-			var pick = Math.floor( pickt );
-			var pickNext = ( pick + 1 ) % segments;
-
-			binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
-			binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
-
-			var dir = tube.path.getTangentAt( t );
-			var offset = 15;
-			normal.copy( binormal ).cross( dir );
-
-			// We move on a offset on its binormal
-			pos.add( normal.clone().multiplyScalar( offset ) );
-			splineCamera.position = pos;
-			//cameraEye.position = pos;
-
-
-			// Camera Orientation 1 - default look at
-			//splineCamera.lookAt( lookAt );
-
-			// Using arclength for stablization in look ahead.
-			var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 ).multiplyScalar( scale );
-
-			// Camera Orientation 2 - up orientation via normal
-			splineCamera.matrix.lookAt(splineCamera.position, lookAt, upnormal);
-			splineCamera.rotation.setFromRotationMatrix( splineCamera.matrix, splineCamera.rotation.order );
-
-			//cameraHelper.update();
-			//parent.rotation.y += ( targetRotation - parent.rotation.y ) * 0.05;
-			renderer.render( scene, splineCamera);
 		}
 		else renderer.render( scene, camera );
 }

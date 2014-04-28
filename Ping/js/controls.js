@@ -54,7 +54,7 @@ $(function() {
 	});
 	
 	window.top.$('#anim_path').click(function(){
-		log(animCamEnabled)
+		//window.top.$("#refresh_path")["onclick"].call(window.top.$("#refresh_path"));
 		animCamEnabled = true;
 	});
 	initSelectControl();
