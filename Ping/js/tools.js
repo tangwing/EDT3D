@@ -6,7 +6,7 @@ function testAnything()
 	//debugger;
 	//log(date.getFullYear()+" "+date.getMonth()+" "+date.getDay()+" "+ date.getHours()+" "+ date.getMinutes())
 	var graph = getRoomGraph();
-	var path = graph.dijkstra(54,8); //从oc到turing怎么走？！
+	var path = graph.dijkstra(29,103); //从oc到turing怎么走？！
 	//path = graph.dijkstra(59,60); 
 	log(path.toString());
 
@@ -39,31 +39,45 @@ function getRoomGraph(){
 	if(this.g) return this.g;
 	else this.g = new Graph(false);
 	//Rez de chaussez
-	this.g.addNeighborChain(5,[4,3,70,78,1,71],
-							[0, 0,9,15,12,16]);
-	this.g.addNeighborChain(1,[72,6,2,  8,79, 74,80],
-							[20,20,40,20,40,7,10]);
+	this.g.addNeighborChain(5,[4,3,70,78,1], //,71
+							[0, 0,9,15,12]);//,16
+	this.g.addNeighborChain(1,[72,6,2,  8,79, 74],//,80
+							[20,20,40,20,40,7]);//,10
 	this.g.addNeighborChain(72,[73,0,75,77,73,6],
 							[ 60,35,15,15,10,45]);
 	this.g.addNeighborChain(2,[73,10,9,8],[37,25,5,15]);
-	this.g.addNeighbor(76,75,20);
+	//this.g.addNeighbor(76,75,20);
 	this.g.addNeighbor(7,79,23);
 	this.g.addNeighbor(12,90,20);
 	//1er Etage
-	this.g.addNeighborChain(84, [81,22,23,24,25,85,84,83,82],[20,5,5,20,20,5,20,5,25]);
-	this.g.addNeighborChain(83,[17,18,19,15,16,20,21,13,14,89,90,92,76],
-							   [14, 0,15,30,0 ,0 , 0,25, 0,15,13,30,70]);
+	this.g.addNeighborChain(84, [81,22,23,24,25,85,84,83], //,82
+		[20,5,5,20,20,5,20,5]);//,25
+	this.g.addNeighborChain(83,[17,18,19,15,16,20,21,13,14,89,90],//,92,76],
+							   [14, 0,15,30,0 ,0 , 0,25, 0,15,13]);//,30,70
 	this.g.addNeighborChain(90, [34,33,32,31,29,28,27,26,86,85],
 								[15,20,20,30,20,5,30,20,15,20]);
 	this.g.addNeighbor(86,73, 70);
-	this.g.addNeighborChain(31,[91,88,87,80], [35,10,20, 70]);
+	this.g.addNeighborChain(31,[91,88], //,87,80
+		[35,10]);//,20, 70
 	this.g.addNeighbor(91,30,20);
 	//2ème Etage
-	this.g.addNeighborChain(82,[96,98,97,95,50,51],[70,20,15,20,5,15]);
-	this.g.addNeighborChain(97,[44,43,42,41,45,46,39,40,47,38,48,37,49,36,99,102,92],
-							   [10,10,15,0,0,10,10,0,0,20,0,10,0,20,15,30,70]);
-	this.g.addNeighborChain(99,[60,59,57,58,61,101,100,87],[25,60,25,0,25,15,20,70]);
+	//this.g.addNeighborChain(82,[96,98,97,95,50,51],[70,20,15,20,5,15]); 
+	this.g.addNeighborChain(97, [95,50,51],[20,5,15]); 
+	this.g.addNeighborChain(97,[44,43,42,41,45,46,39,40,47,38,48,37,49,36,99],	//,102,92
+							   [10,10,15,0,0,10,10,0,0,20,0,10,0,20,15]);		//,30,70
+	this.g.addNeighborChain(99,[60,59,57,58,61,101],//,100,87
+		[25,60,25,0,25,15]); //,20,70
 	this.g.addNeighborChain(97,[53,54,55,56,59],[30,25,25,30,25]);
+	//Lier les étages
+	this.g.addNeighborChain(70, [81,95], [70,70]);
+	this.g.addNeighborChain(76, [92,102], [70,70]);
+	this.g.addNeighborChain(80, [87,100], [70,70]);
+	this.g.addNeighbor(103, 29, 35);
+	this.g.addNeighbor(103, 2, 17);
+	this.g.addNeighbor(103, 6, 43);
+	this.g.addNeighbor(103, 10, 5);
+	this.g.addNeighbor(103, 73, 23);
+
 	return this.g;
 }
 
@@ -94,15 +108,6 @@ Graph.prototype.addNeighbor = function(idSrc, idNei, dist)
 	}
 }
 
-///
-/// Add several neighbors of one node
-///	arrVoisin: array of Voisin object, type {id:0, dist:4}
-Graph.prototype.addFriends = function(id, arrVoisin)
-{
-	if( !this.nodeList[id]) this.nodeList[id] = new Array();
-	for(var voisin=0; voisin<arrVoisin.length; voisin++)
-		this.nodeList[id].push( arrVoisin[voisin]);
-}
 
 //Add a chain of neighbors
 //id : the first node of the chain

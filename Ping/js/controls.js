@@ -23,7 +23,13 @@ $(function() {
 	window.top.$("#refresh_classroom").click(function(){
 		clear_salle_find();
 		salle_changed = window.top.$("#classroom").find("option:selected").text();
-		change_salle_stats(salle_changed,"finded");
+		change_salle_stats(salle_changed,"Finded");
+	});
+
+	window.top.$("select").change(function(){
+		clear_salle_find();
+		salle_changed = window.top.$("#classroom").find("option:selected").text();
+		change_salle_stats(salle_changed,"Finded");
 	});
 	
 	window.top.$("#clear_classroom").click(function(){
@@ -45,9 +51,12 @@ $(function() {
 			log(path.toString());
 			draw_path(path);
 		}
-
 	});
 	
+	window.top.$('#anim_path').click(function(){
+		log(animCamEnabled)
+		animCamEnabled = true;
+	});
 	initSelectControl();
 });
 
@@ -60,14 +69,14 @@ function clear_salle_find(){
 			}
 		}
 		if(i == eventList.length)
-			change_salle_stats(salle_changed, "blank");
+			change_salle_stats(salle_changed, "Blank");
 		salle_changed = null;
 	}
 }
 
 function clear_salle(){
 	eventList.forEach(function(value){
-		change_salle_stats(value.LOCATION, "blank");
+		change_salle_stats(value.LOCATION, "Blank");
 	});
 }
 
