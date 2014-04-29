@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>EDT3D - Polytech'Tours</title>
+    <style>canvas { width: 100%; height: 100% }</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="css/libs/bootstrap.min.css">
+    <link rel="stylesheet" href="css/libs/bootstrap-combined.min.css">
+    <link rel="stylesheet" href="css/libs/jquery-ui-1.10.4.custom.min.css">
+    <link rel="stylesheet" href="css/edt3d.css">
+    <link rel="icon" href="img/appicon.png" />
+
+    <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+    <script type="text/javascript" src="js/libs/jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/libs/bootstrap-filestyle.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-ui.js"></script>
+</head>
+
+<body>
+	<div class="page-header">
+    	<h1>EDT3D <small>Emplois du temps 3D </small></h1> 
+    	<div class="samples">
+    		<div class="colorsample" style="background-color:#7B7A7D">Finished</div>
+    		<div class="colorsample" style="background-color:#00FF00">Next</div>
+    		<div class="colorsample" style="background-color:#0000FF">Ongoing</div>
+    	</div>
+   	</div>
+
+	<iframe id="viewer" src="EDT3D.html"></iframe>
+			
+	<div class="sidebar">
+		<div class="well">
+			<div>
+				<ul class="nav nav-list">
+					<li>
+						<label class="tree-toggle nav-header">
+							Ics file import :
+							<input id="fileInput" type="file" data-classInput="input-small" data-icon="false" style="height:10" />
+							
+						</label>
+						<label class="tree-toggle nav-header">
+							<input id="urlInput" type="text" style="height:10" />
+							<button id="btnUrl" type="submit" class="btn btn-default">URL</button><br/>
+						</label>
+						<label class="tree-toggle nav-header">Date : &nbsp <input type="text" id="datepicker" disabled="disabled"/>
+						</label>
+					</li>
+                    <li class="divider"></li>
+                    <li>
+						<label class="tree-toggle nav-header">
+							Find classroom :
+							<select class="form-control" id="classroom">
+								<option></option>
+							</select>
+							<button id="refresh_classroom" type="submit" class="btn btn-default">Refresh</button>
+							<button id="clear_classroom" type="submit" class="btn btn-default">Clear</button>
+						</label>
+						<label class="tree-toggle nav-header">Path : &nbsp 
+							<select class="form-control" id="path_start">
+								<option></option>
+								<option>Entrance</option>
+							</select>
+							<select class="form-control" id="path_end">
+								<option></option>
+								<option>Entrance</option>
+							</select>
+							<button id="refresh_path" type="submit" class="btn btn-default">Path</button>
+							<button id="anim_path" type="submit" class="btn btn-default">Anim!</button>
+						</label>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+						<label class="tree-toggle nav-header">Class info : &nbsp
+							<textarea class="" id="classinfo" readonly ></textarea>
+						</label>
+					</li>
+                </ul>
+            </div>
+    	</div>
+    </div>
+</body>
+
+</html>
