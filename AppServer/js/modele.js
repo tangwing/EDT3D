@@ -274,9 +274,10 @@ function init() {
 	// CAMERA
 	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 	splineCamera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-	camera.position.set( 0, 0, 1000 );
-	// CONTROLS
-	controls = new THREE.TrackballControls ( camera );
+	camera.position.set( 450, 350, 1000 );
+	//To make effect of camera.lookUp(new THREE.Vector3(450, 350,0))
+	// have to modify trackballControls.js, in the constructor we change this.target.
+	controls = new THREE.TrackballControls ( camera ); 
 	// SCENE
 	scene = new THREE.Scene();
 

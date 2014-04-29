@@ -41,12 +41,13 @@ window.onload = function()
 	var btnUrl=window.top.$('#btnUrl');
 	//var fileContent = document.getElementById('parseResult');
 	btnUrl.click(function(e){
-		calurl = urlInput.val().trim();
+		calurl = urlInput.val().replace(/\s/g, "");
+
 		if(calurl){
-			///TODO get cal from url
+			//alert("/getcal.php?u='"+calurl+"'")
 			$.ajax({
 			  async: false,
-			  url:calurl,
+			  url:"/getcal.php?u="+calurl,
 			  success: function (data){
 			  	//alert(data)
 			  	DATA = data;

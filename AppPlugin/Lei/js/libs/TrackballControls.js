@@ -3,7 +3,7 @@
  * @author Mark Lundin 	/ http://mark-lundin.com
  */
 
-THREE.TrackballControls = function ( object, domElement ) {
+THREE.TrackballControls = function ( object,  domElement ) {
 
 	var _this = this;
 	var STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM: 4, TOUCH_PAN: 5 };
@@ -36,7 +36,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	// internals
 
-	this.target = new THREE.Vector3();
+	this.target = new THREE.Vector3(450, 350, 0);
 
 	var lastPosition = new THREE.Vector3();
 
