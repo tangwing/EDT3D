@@ -12,8 +12,8 @@ $(function() {
 					clear_salle();
 					scene.remove(tubeMesh);
 					if(dateText != date){
-						if(file != null){
-							getEventList(reader,file,yyyymmdd(dateText));
+						if(DATA){
+							getEventList(DATA,yyyymmdd(dateText));
 						}
 						date = dateText;
 					}

@@ -1,13 +1,16 @@
-chrome.browserAction.onClicked.addListener(function(tab) {
-	//chrome.tabs.update(tab.id, {"url":"http://baidu.com"}, function(tab){});
-	var url = chrome.extension.getURL('index.html');
-	chrome.tabs.update(tab.id, {"url":url}, function(tab){});
-});
+if(chrome.browserAction){
+	chrome.browserAction.onClicked.addListener(function(tab) {
+		//chrome.tabs.update(tab.id, {"url":"http://baidu.com"}, function(tab){});
+		var url = chrome.extension.getURL('index.html');
+		chrome.tabs.update(tab.id, {"url":url}, function(tab){});
+	});
+}
 
 var eventList = []; //global
 var class_status = []; //Class, Finished, NotStarted
 var file;
 var reader;
+var DATA = "";
 window.onload = function()
 {//Deal with file change event
 	var fileInput=window.top.document.getElementById('fileInput');
@@ -18,10 +21,11 @@ window.onload = function()
 		{	
 			reader = new FileReader();
 			reader.onload = function(){
+				DATA = this.result;
 				if(date == null)
-					getEventList(this, null,new Date().yyyymmdd());
+					getEventList(this.result,new Date().yyyymmdd());
 				else
-					getEventList(this, null,yyyymmdd(date));
+					getEventList(this.result, yyyymmdd(date));
 			}
 			reader.readAsText(file);
 			
@@ -41,15 +45,17 @@ window.onload = function()
 		if(calurl){
 			///TODO get cal from url
 			$.ajax({
+			  async: false,
 			  url:calurl,
 			  success: function (data){
-			  	alert(data)
-
+			  	//alert(data)
+			  	DATA = data;
 			  	if(date == null)
-					getEventList(this, data,new Date().yyyymmdd());
+					getEventList(data,new Date().yyyymmdd());
 				else
-					getEventList(this, data,yyyymmdd(date));
+					getEventList(data,yyyymmdd(date));
 				window.top.$("#datepicker").removeAttr("disabled"); 
+				localStorage.setItem("calurl", calurl);
 			  },
 			  error: function(err, status, exception){
 			  		alert("Error:"+err+"!");
@@ -71,12 +77,12 @@ window.onload = function()
 ///
 /// Analyse the ics file and reture the eventlist of the specified date
 /// ! use str first if possible. This means the calendar file content.
-function getEventList(reader, str, date)
+function getEventList(str, date)
 {
 	var regEvent = new RegExp("BEGIN:VEVENT[\\s\\S]{1,40}DTSTART:"+date+"[\\s\\S]{1,500}END:VEVENT", "g");
 	//fileContent.innerText = reader.result.match(regEvent);
 	var regTmp = new RegExp("(,?\"[A-Z-]*):","g");
-	var result = str ? str.match(regEvent) : reader.result.match(regEvent);
+	var result = str.match(regEvent);
 	if(result != null)
 	{
 		eventList = []; 
@@ -103,33 +109,19 @@ function getEventList(reader, str, date)
 		log(eventList.length);
 		//Now we have eventList, attaching it to rooms
 		eventList.forEach(function(v, ind){
+			//debugger
 			class_status.push(getClassStatus(v.TBEGIN, v.TEND));
 			log("Cours "+ind +":");
 			log(v.TBEGIN.getHours()+":"+v.TBEGIN.getMinutes()+ " -> " + (v.TEND.getHours())+":"+v.TEND.getMinutes());
-			//log(v.TBEGIN);
 			log(v.SUMMARY);
 			log(v.LOCATION);
-		});
-
-		//If no class under way
-		// if(class_status.indexOf("Class") == -1)
-		// {
-		// 	var index = class_status.indexOf("NotStarted");
-		// 	if(index != -1)
-		// 		class_status[index] = "Class"; //?Case insensitive?
-		// }
-			
-		//Update room colors
-		eventList.forEach(function(v,index){
-			log($.trim(v.LOCATION) == "")
-			log($.trim(v.LOCATION) === "")
-			if($.trim(v.LOCATION) === ""){ //Show in text
-				var info = window.top.$("#classinfo").text() + 
-					v.TBEGIN.getHours()+":"+v.TBEGIN.getMinutes()+ " -> " + 
-					(v.TEND.getHours())+":"+v.TEND.getMinutes() + "\n" + v.SUMMARY + "\n" +v.LOCATION +
-					"\n\n=======\n\n";
-				window.top.$("#classinfo").text(info);
-			}else	change_salle_stats(v.LOCATION, class_status[index]); //?
+			var info = window.top.$("#classinfo").text() + "=======\n" +
+				v.TBEGIN.getHours()+":"+v.TBEGIN.getMinutes()+ " -> " + 
+				(v.TEND.getHours())+":"+v.TEND.getMinutes() + "\n" + v.SUMMARY + "\n" +v.LOCATION +
+				"\n\n";
+			window.top.$("#classinfo").text(info);
+			log(class_status)
+			change_salle_stats(v.LOCATION, class_status[ind]); //?
 		});
 
 		//Show shortest path
@@ -143,7 +135,8 @@ function getClassStatus(startTime, endTime){
 	if(now.getHours()< startTime.getHours() || ( now.getHours() == startTime.getHours() && now.getMinutes()< startTime.getMinutes())){
 		return "NotStarted";
 	}
-	else if(now.getHours()< endTime.getHours() || ( now.getHours() == endTime.getHours() && now.getMinutes()< endTime.getMinutes())){
+	else if(now.getHours()< endTime.getHours() ||  
+			(now.getHours() == endTime.getHours() && now.getMinutes()< endTime.getMinutes())){
 		return "Class";
 	}
 	else {

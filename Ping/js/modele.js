@@ -2,8 +2,8 @@
 var salle_color = {
 	Blank:0xFFFFFF,
 	Class:0x0000FF,
-	NotStarted:0x86B404,
-	Finished:0xD8F781,
+	NotStarted:0x00FF00,
+	Finished:0x7B7A7D,
 	Finded: 0xFF0000,
 };
 var salle_form = {
@@ -306,8 +306,8 @@ function init() {
 		draw_salle(new salle('','','',value.position,new salle_size(1,1,1),salle_form.Square,salle_direction.Horizontal),"Blank");
 	});*/
  //TODO
-	change_salle_stats("Pascal","Class");
-	change_salle_stats("TP Systèmes","Class");
+	//change_salle_stats("Pascal","Class");
+	//change_salle_stats("TP Systèmes","Class");
 	draw_etage(1);
 	draw_etage(2);
 	//draw_etage(3);
@@ -387,7 +387,7 @@ function draw_path(path){
 }
 
 function change_salle_stats(name,stats){
-	if(name != "")
+	if(name && name != "")
 	{
 		var group = groups.getGroupByName(name);
 		group.children.forEach(function(value){
@@ -417,7 +417,7 @@ function draw_salle(salle,stats)
 				 position.z<200? 0.8 : 0.7
 		//map: THREE.ImageUtils.loadTexture('img/wall.jpg')
 	} );
-	var line_material = new THREE.LineBasicMaterial({color: 0x000000});
+	var line_material = new THREE.LineBasicMaterial({color: 0xD5D4D9});
 	var line_positions; //Borders
 //Variables for text geo	
 var text = salle.name,

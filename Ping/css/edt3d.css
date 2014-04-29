@@ -1,6 +1,6 @@
 @charset "utf-8";
 .well{
-	padding:9px;
+	padding:3px;
 }
 
 .sidebar{
@@ -43,12 +43,30 @@
 
 
 .page-header{
-	padding-bottom:5px; margin-bottom:20px;
+	padding-bottom:5px; 
+	margin-bottom:20px;
+	
+}
+h1{
 	display: inline;
 }
-.inline{
-	
+
+.samples{
+	height: 40px;
 	display: inline;
+	float: right;
+	
+}
+
+.colorsample{
+	float: right;
+	margin-top: 20px;
+	margin-right: 20px;
+	width: 60px;
+	height: 20px;
+	color: #FFFFFF;
+	text-align: center;
+vertical-align: middle;
 }
 
 .container_body{
@@ -63,8 +81,8 @@
 }
 
 .form-control{
-	display:inline-block;
 	padding: 2px 2px;
+	display:inline-block;
 	line-height: 10px;
 	font-size: 14px;
 	height: 22px;
@@ -79,6 +97,7 @@
 }
 #classinfo{
 	height:150px;
-	overflow-x: scroll; 
+	width: 180px; 
 	color:green;
+	white-space: nowrap; overflow: auto;
 }
