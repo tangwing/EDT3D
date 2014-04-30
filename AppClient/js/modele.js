@@ -393,7 +393,7 @@ function change_salle_stats(name,stats){
 		var group = groups.getGroupByName(name);
 		group.children.forEach(function(value){
 			if(stats == "Blank" && value.geometry.vertices.length == 2 ) ///?
-				value.material.color.setHex(0x000000);
+				value.material.color.setHex(0xD5D4D9);
 			else{
 				var color = salle_color[stats];
 				value.material.color.setHex(color);
@@ -712,9 +712,9 @@ function draw_etage(couche){
 
 
 		stair.vertices = vertices;
-		// stair.faces.push(new THREE.Face3(0, 1, 2),new THREE.Face3(1,3,2),
-		// 		       new THREE.Face3(0, 2, 1),new THREE.Face3(3,1,2));
-		stair.faces.push(new THREE.Face3(0, 1, 2), new THREE.Face3(2,1,3) );
+		stair.faces.push(new THREE.Face3(0, 1, 2),new THREE.Face3(1,3,2),
+		 		       new THREE.Face3(0, 2, 1),new THREE.Face3(3,1,2));
+		//stair.faces.push(new THREE.Face3(0, 1, 2), new THREE.Face3(2,1,3) );
 		stair.faceVertexUvs[0] = []
 		stair.faceVertexUvs[ 0 ].push( [
 	        new THREE.Vector2( 0, 0 ),

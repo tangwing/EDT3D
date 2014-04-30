@@ -47,16 +47,19 @@ window.onload = function()
 			//alert("/getcal.php?u='"+calurl+"'")
 			$.ajax({
 			  async: false,
-			  url:calurl,
+			  url:"/getcal.php?u="+calurl,
 			  success: function (data){
-			  	//alert(data)
-			  	DATA = data;
-			  	if(date == null)
-					getEventList(data,new Date().yyyymmdd());
-				else
-					getEventList(data,yyyymmdd(date));
-				window.top.$("#datepicker").removeAttr("disabled"); 
-				localStorage.setItem("calurl", calurl);
+			  	if(data.indexOf("BEGIN") != 0)//not good
+			  		alert("Error: "+data)
+			  	else{
+			  		DATA = data;
+			  		if(date == null)
+			  			getEventList(data,new Date().yyyymmdd());
+			  		else
+			  			getEventList(data,yyyymmdd(date));
+			  		window.top.$("#datepicker").removeAttr("disabled"); 
+			  		localStorage.setItem("calurl", calurl);
+			  	}
 			  },
 			  error: function(err, status, exception){
 			  		alert("Error:"+err+"!");
