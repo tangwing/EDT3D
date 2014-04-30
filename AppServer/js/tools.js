@@ -41,12 +41,12 @@ function getRoomGraph(){
 	//Rez de chaussez
 	this.g.addNeighborChain(5,[4,3,70,78,1], //,71
 							[0, 0,9,15,12]);//,16
-	this.g.addNeighborChain(1,[72,6,2,  8,79, 74],//,80
-							[20,20,40,20,40,7]);//,10
+	this.g.addNeighborChain(1,[72,6,2,  8,79],//, 74,80
+							[20,20,40,20,40]);//,7,10
 	this.g.addNeighborChain(72,[73,0,75,77,73,6],
 							[ 60,35,15,15,10,45]);
 	this.g.addNeighborChain(2,[73,10,9,8],[37,25,5,15]);
-	//this.g.addNeighbor(76,75,20);
+	this.g.addNeighbor(76,75,20);
 	this.g.addNeighbor(7,79,23);
 	this.g.addNeighbor(12,90,20);
 	//1er Etage
@@ -61,7 +61,6 @@ function getRoomGraph(){
 		[35]);//,20, 70
 	this.g.addNeighbor(91,30,20);
 	//2ème Etage
-	//this.g.addNeighborChain(82,[96,98,97,95,50,51],[70,20,15,20,5,15]); 
 	this.g.addNeighborChain(97, [95,50,51],[20,5,15]); 
 	this.g.addNeighborChain(97,[44,43,42,41,45,46,39,40,47,38,48,37,49,36,99],	//,102,92
 							   [10,10,15,0,0,10,10,0,0,20,0,10,0,20,15]);		//,30,70
@@ -70,7 +69,7 @@ function getRoomGraph(){
 	this.g.addNeighborChain(97,[53,54,55,56,59],[30,25,25,30,25]);
 	//Lier les étages
 	this.g.addNeighborChain(70, [81,95], [70,70]);
-	this.g.addNeighborChain(76, [92,102], [70,70]);
+	this.g.addNeighborChain(75, [90,99], [70,70]);
 	this.g.addNeighborChain(79, [91,58], [70,70]);
 	this.g.addNeighbor(103, 29, 35);
 	this.g.addNeighbor(103, 2, 17);
