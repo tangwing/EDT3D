@@ -17,8 +17,9 @@ window.onload = function()
 	//var fileContent = document.getElementById('parseResult');
 	fileInput.addEventListener('change', function(e){
 		file = fileInput.files[0];
-		if(true)	//always
-		{	
+		//alert(file)
+		if(file)	//always
+		{	//alert("in")
 			reader = new FileReader();
 			reader.onload = function(){
 				DATA = this.result;
@@ -32,8 +33,8 @@ window.onload = function()
 			window.top.$("#datepicker").removeAttr("disabled"); 
 			
 		}else{
-			fileContent.innerText = "File type not supported!"
-			window.top.$("#datepicker").attr("disabled","disabled"); 
+			//fileContent.innerText = "File type not supported!"
+			//window.top.$("#datepicker").attr("disabled","disabled"); 
 		}
 	});
 	//url logic
@@ -87,7 +88,7 @@ function getEventList(str, date)
 	//fileContent.innerText = reader.result.match(regEvent);
 	var regTmp = new RegExp("(,?\"[A-Z-]*):","g");
 	var result = str.match(regEvent);
-	if(result != null)
+	if(result != null && result != "")
 	{
 		eventList = []; 
 		class_status = [];
