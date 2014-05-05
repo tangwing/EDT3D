@@ -1,11 +1,3 @@
-if(chrome.browserAction){
-	chrome.browserAction.onClicked.addListener(function(tab) {
-		//chrome.tabs.update(tab.id, {"url":"http://baidu.com"}, function(tab){});
-		var url = chrome.extension.getURL('index.html');
-		chrome.tabs.update(tab.id, {"url":url}, function(tab){});
-	});
-}
-
 var eventList = []; //global
 var class_status = []; //Class, Finished, NotStarted
 var file;
@@ -51,7 +43,7 @@ window.onload = function()
 			  url:calurl,
 			  success: function (data){
 			  	if(data.indexOf("BEGIN") != 0)//not good
-			  		alert("Error: "+data)
+			  		alert("Failed to download data : "+data)
 			  	else{
 			  		DATA = data;
 			  		if(date == null)
@@ -63,7 +55,7 @@ window.onload = function()
 			  	}
 			  },
 			  error: function(err, status, exception){
-			  		alert("Error:"+err+"!");
+			  		alert("Failed to download data :"+err+"!");
 			  		window.top.$("#datepicker").attr("disabled","disabled"); 
 			  	}
 			  });				

@@ -48,10 +48,10 @@ window.onload = function()
 			//alert("/getcal.php?u='"+calurl+"'")
 			$.ajax({
 			  async: false,
-			  url:"/getcal.php?u="+calurl,
+			  url:calurl,
 			  success: function (data){
 			  	if(data.indexOf("BEGIN") != 0)//not good
-			  		alert("Error: "+data)
+			  		alert("Failed to download data : "+data)
 			  	else{
 			  		DATA = data;
 			  		if(date == null)
@@ -63,7 +63,7 @@ window.onload = function()
 			  	}
 			  },
 			  error: function(err, status, exception){
-			  		alert("Error:"+err+"!");
+			  		alert("Failed to download data :"+err+"!");
 			  		window.top.$("#datepicker").attr("disabled","disabled"); 
 			  	}
 			  });				

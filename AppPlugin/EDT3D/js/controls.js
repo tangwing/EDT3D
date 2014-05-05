@@ -35,7 +35,7 @@ $(function() {
 		change_salle_stats(salle_changed,"Finded");
 	});
 
-	window.top.$("select").change(function(){
+	window.top.$("#classroom").change(function(){
 		clear_salle_find();
 		salle_changed = window.top.$("#classroom").find("option:selected").text();
 		change_salle_stats(salle_changed,"Finded");
