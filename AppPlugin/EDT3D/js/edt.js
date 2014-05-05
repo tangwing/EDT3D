@@ -113,6 +113,7 @@ function getEventList(str, date)
 		//Now we get all event of today in the list
 		log(eventList.length);
 		//Now we have eventList, attaching it to rooms
+		window.top.$("#classinfo").text("")
 		eventList.forEach(function(v, ind){
 			//debugger
 			class_status.push(getClassStatus(v.TBEGIN, v.TEND));

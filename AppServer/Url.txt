@@ -2,3 +2,6 @@ http://ade.univ-tours.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?data=824
 
 DI4
 http://ade.univ-tours.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?data=8241fc38732002141517c5127e308610bd72d825015315fe7bfc1684284d1e9aec7f554d6ed7ba1b8a72a25d105159e8ae83a048a28c141e
+
+DI3_semaine de 5/5
+http://ade.univ-tours.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?data=8241fc3873200214bf8aaa661e478c72e0fa50826f0818af2370d544632bbb83906f45af276f59aec18424f8595af9f973866adc6bb17503

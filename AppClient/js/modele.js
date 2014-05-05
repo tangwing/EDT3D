@@ -366,8 +366,16 @@ function draw_path(path){
 	var vertices = [];
 	for(var i=0; i<path.length; i++)
 	{
-		vertices.push(points[path[i]].pos);
-		geometry.vertices.push(points[path[i]].pos);
+		var p = points[path[i]].pos;
+		var p0 = (i==0)?null: points[path[i-1]].pos;
+		if(i==0 || 
+			p.x != p0.x || 
+			p.y != p0.y || 
+			p.z != p0.z){
+			vertices.push(p);
+			geometry.vertices.push(p);
+			log(i)
+		}
 	}
 	var path_line = new THREE.SplineCurve3(vertices);
 

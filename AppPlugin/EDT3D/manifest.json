@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
 
   "name": "EDT3D",
   "description": "Emploi du temps 3D, Polytech'Tours. XIANG Ping & SHANG Lei",
@@ -16,4 +16,3 @@
 	"page": "index.html"
   }
 }
-//"scripts": ["bg.js", "js/edt3d.js", "js/jquery-1.11.0.js", "EDT.html"]

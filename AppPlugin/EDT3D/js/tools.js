@@ -68,9 +68,9 @@ function getRoomGraph(){
 		[25,60,25,0,25]); //,15,20,70
 	this.g.addNeighborChain(97,[53,54,55,56,59],[30,25,25,30,25]);
 	//Lier les étages
-	this.g.addNeighborChain(70, [81,95], [70,70]);
-	this.g.addNeighborChain(75, [90,99], [70,70]);
-	this.g.addNeighborChain(79, [91,58], [70,70]);
+	this.g.addNeighborChain(70, [81,95], [85,85]); //We've removed some points for simplity of path, so we need to augmente the distance
+	this.g.addNeighborChain(75, [90,99], [85,85]);
+	this.g.addNeighborChain(79, [91,58], [85,85]);
 	this.g.addNeighbor(103, 29, 35);
 	this.g.addNeighbor(103, 2, 17);
 	this.g.addNeighbor(103, 6, 43);
