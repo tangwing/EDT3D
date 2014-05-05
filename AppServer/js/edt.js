@@ -48,7 +48,7 @@ window.onload = function()
 			//alert("/getcal.php?u='"+calurl+"'")
 			$.ajax({
 			  async: false,
-			  url:calurl,
+			  url:"/getcal.php?u="+calurl,
 			  success: function (data){
 			  	if(data.indexOf("BEGIN") != 0)//not good
 			  		alert("Failed to download data : "+data)

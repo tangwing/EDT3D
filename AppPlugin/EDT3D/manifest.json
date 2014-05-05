@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "EDT3D",
-  "description": "Emploi du temps 3D, Polytech'Tours. XIANG Ping & SHANG Lei",
-  "version": "3.0",
+  "description": "Emploi du temps 3D, Polytech'Tours.",
+  "version": "3.5",
 
   "permissions": [
     "http://ade.univ-tours.fr/",
